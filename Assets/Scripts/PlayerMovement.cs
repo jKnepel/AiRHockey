@@ -4,44 +4,39 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] Player _playerNumber;
-    [SerializeField] float _speed = 2f;
+	[SerializeField] Rigidbody _player1;
+	[SerializeField] Rigidbody _player2;
+    [SerializeField] float _speed = 20f;
 
-	private Rigidbody rb => GetComponent<Rigidbody>();
+	private Rigidbody _currentPlayer;
+	private Vector3 _movement = new();
+	private int _layerMask;
+
+	private void Awake()
+	{
+		_currentPlayer = _player1;
+		_layerMask = (1 << LayerMask.NameToLayer("Barrier")) | (1 << LayerMask.NameToLayer("Player Barrier")) | (1 << LayerMask.NameToLayer("Puck"));
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+	private void Update()
+	{
+		if (Input.GetKey(KeyCode.Alpha1))
+			_currentPlayer = _player1;
+		if (Input.GetKey(KeyCode.Alpha2))
+			_currentPlayer = _player2;
+
+		_movement.x = -Input.GetAxis("Mouse Y");
+		_movement.z = Input.GetAxis("Mouse X");
+	}
 
 	private void FixedUpdate()
 	{
-		Vector3 movement = new Vector3(0, 0, 0);
+		Vector3 newPosition = _currentPlayer.position + _movement * Time.fixedDeltaTime * _speed;
+		Vector3 direction = newPosition - _currentPlayer.position;
+		float delta = Vector3.Distance(_currentPlayer.position, newPosition);
 
-		if (_playerNumber == Player.Player1)
-		{
-			if (Input.GetKey(KeyCode.W))
-				movement.x = -1;
-			if (Input.GetKey(KeyCode.A))
-				movement.z = -1;
-			if (Input.GetKey(KeyCode.S))
-				movement.x = 1;
-			if (Input.GetKey(KeyCode.D))
-				movement.z = 1;
-		}
-		else if (_playerNumber == Player.Player2)
-		{
-			if (Input.GetKey(KeyCode.UpArrow))
-				movement.x = -1;
-			if (Input.GetKey(KeyCode.LeftArrow))
-				movement.z = -1;
-			if (Input.GetKey(KeyCode.DownArrow))
-				movement.x = 1;
-			if (Input.GetKey(KeyCode.RightArrow))
-				movement.z = 1;
-		}
-
-		rb.MovePosition(transform.position + movement * Time.deltaTime * _speed);
+		if (!Physics.Raycast(_currentPlayer.position, direction, delta, _layerMask))
+			_currentPlayer.MovePosition(newPosition);
 	}
-}
-
-public enum Player
-{
-    Player1 = 0,
-    Player2 = 1
 }
