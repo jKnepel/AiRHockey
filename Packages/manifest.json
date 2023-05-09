@@ -9,6 +9,8 @@
     }
   ],
   "dependencies": {
+    "com.atteneder.gltfast": "5.0.4",
+    "com.microsoft.mixedreality.openxr": "file:MixedReality/com.microsoft.mixedreality.openxr-1.8.0.tgz",
     "com.microsoft.mrtk.accessibility": "file:MixedReality/com.microsoft.mrtk.accessibility-1.0.0-pre.15.tgz",
     "com.microsoft.mrtk.audio": "file:MixedReality/com.microsoft.mrtk.audio-3.0.0-pre.15.tgz",
     "com.microsoft.mrtk.core": "file:MixedReality/com.microsoft.mrtk.core-3.0.0-pre.15.tgz",
@@ -24,17 +26,17 @@
     "com.microsoft.mrtk.uxcomponents.noncanvas": "file:MixedReality/com.microsoft.mrtk.uxcomponents.noncanvas-3.0.0-pre.15.tgz",
     "com.microsoft.mrtk.uxcore": "file:MixedReality/com.microsoft.mrtk.uxcore-3.0.0-pre.15.tgz",
     "com.microsoft.mrtk.windowsspeech": "file:MixedReality/com.microsoft.mrtk.windowsspeech-3.0.0-pre.15.tgz",
-    "com.unity.collab-proxy": "2.0.1",
+    "com.unity.collab-proxy": "2.0.3",
     "com.unity.feature.development": "1.0.1",
-    "com.unity.ide.rider": "3.0.18",
-    "com.unity.ide.visualstudio": "2.0.17",
+    "com.unity.ide.rider": "3.0.20",
+    "com.unity.ide.visualstudio": "2.0.18",
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.test-framework": "1.1.31",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.4",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.8.0",
-    "com.unity.xr.openxr": "1.5.3",
+    "com.unity.xr.openxr": "1.7.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -65,8 +67,6 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.atteneder.gltfast": "5.0.4",
-    "com.microsoft.mixedreality.openxr": "file:MixedReality/com.microsoft.mixedreality.openxr-1.8.0.tgz"
+    "com.unity.modules.xr": "1.0.0"
   }
 }
