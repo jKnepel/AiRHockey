@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3977528214093400884}
   - component: {fileID: -7492660330140284740}
   - component: {fileID: 5338810699455699023}
-  - component: {fileID: -1113139443631948273}
+  - component: {fileID: 8037603658318783683}
   m_Layer: 0
   m_Name: thingies
   m_TagString: Untagged
@@ -116,7 +116,7 @@ CapsuleCollider:
   m_Height: 3.6666665
   m_Direction: 1
   m_Center: {x: 0, y: -1, z: 0}
---- !u!114 &-1113139443631948273
+--- !u!114 &8037603658318783683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,8 +125,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3185162753523198689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4de8e027c7002e4fa4a0e15f7fecf04, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f3523ad83376c742b9dbfff60bdf655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerNumber: 0
-  _speed: 0.5
+  Score: 0
+  InitialPosition: {x: 0, y: 0, z: 0}

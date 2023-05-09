@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// temp class until open xr interaction is added
 public class PlayerMovement : MonoBehaviour
 {
 	[SerializeField] Rigidbody _player1;
