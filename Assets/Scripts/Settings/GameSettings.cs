@@ -12,6 +12,7 @@ namespace HTW.AiRHockey.Settings
         // volume
 
         // keybinds
+        public KeyCode ResetPositions = KeyCode.Backspace;
 
         // speed
     }

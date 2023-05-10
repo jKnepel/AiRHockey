@@ -30,6 +30,12 @@ namespace HTW.AiRHockey.Game
 			// start game
 		}
 
+		private void Update()
+		{
+			if (Input.GetKey(_settings.ResetPositions))
+				ResetPositions();
+		}
+
 		#endregion
 
 		#region public methods
@@ -42,6 +48,10 @@ namespace HTW.AiRHockey.Game
 		{
 			foreach (Player player in _players)
 				player.transform.position = player.InitialPosition;
+
+			Rigidbody puckRB = _puck.gameObject.GetComponent<Rigidbody>();
+			puckRB.velocity = new();
+			puckRB.angularVelocity = new();
 			_puck.transform.position = _puck.InitialPosition;
 		}
 
