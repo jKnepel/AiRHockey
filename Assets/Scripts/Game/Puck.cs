@@ -7,6 +7,8 @@ namespace HTW.AiRHockey.Game
 	[RequireComponent(typeof(Rigidbody), typeof(AudioSource))]
     public class Puck : MonoBehaviour
     {
+		[SerializeField] private GameManager _manager;
+
         public Vector3 InitialPosition = new();
 
 		private void OnCollisionEnter(Collision collision)
@@ -16,7 +18,9 @@ namespace HTW.AiRHockey.Game
 
 		private void OnTriggerEnter(Collider other)
 		{
-			// increase score of player
+			Goal goal = other.GetComponent<Goal>();
+			if (goal)
+				_manager.IncreaseScore(goal.Player);
 		}
 	}
 }

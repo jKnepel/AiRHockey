@@ -70,7 +70,7 @@ namespace HTW.AiRHockey.Game
 
 		private void GameWon(Player winningPlayer)
 		{
-
+			Debug.Log($"Game Won by Player {winningPlayer}");
 		}
 
 		#endregion
