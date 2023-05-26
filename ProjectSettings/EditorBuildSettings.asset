@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/SpatialTracking.unity
+    guid: 5e97ad8d969e1f74cb4d4d89659cf54b
+  - enabled: 1
+    path: Assets/Scenes/ARControllerTest.unity
+    guid: f0939d5561beec24db02bd185cee52f7
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 62fd29f7fd72a604e97ac78af3a157d7, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d0e8b569879f2564b8b2d61d4483216f, type: 2}
