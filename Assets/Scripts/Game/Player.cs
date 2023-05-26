@@ -9,4 +9,5 @@ namespace HTW.AiRHockey.Game
         public int Score = 0;
         public Vector3 InitialPosition = new();
     }
+
 }

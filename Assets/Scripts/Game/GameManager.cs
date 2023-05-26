@@ -9,10 +9,10 @@ namespace HTW.AiRHockey.Game
     {
 		#region fields
 
-		[SerializeField] private GameSettings _settings;
+		[SerializeField] protected GameSettings _settings;
 
-		[SerializeField] private Puck _puck;
-		[SerializeField] private List<Player> _players;
+		[SerializeField]  protected Puck _puck;
+		[SerializeField]  protected List<Player> _players;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace HTW.AiRHockey.Game
 
 		// pause game
 
-		public void ResetPositions()
+		public virtual void ResetPositions()
 		{
 			foreach (Player player in _players)
 				player.transform.position = player.InitialPosition;

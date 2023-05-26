@@ -88,14 +88,14 @@
       }
     },
     "com.microsoft.mrtk.spatialmanipulation": {
-      "version": "file:MixedReality/com.microsoft.mrtk.spatialmanipulation-3.0.0-pre.15.tgz",
+      "version": "file:MixedReality/com.microsoft.mrtk.spatialmanipulation",
       "depth": 0,
-      "source": "local-tarball",
+      "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.core": "3.0.0-pre.15",
-        "com.microsoft.mrtk.uxcore": "3.0.0-pre.15",
+        "com.microsoft.mrtk.core": "3.0.0",
+        "com.microsoft.mrtk.uxcore": "3.0.0",
         "com.unity.inputsystem": "1.3.0",
-        "com.unity.xr.interaction.toolkit": "2.2.0"
+        "com.unity.xr.interaction.toolkit": "2.3.0"
       }
     },
     "com.microsoft.mrtk.standardassets": {
