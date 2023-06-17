@@ -19,8 +19,6 @@ namespace HTW.AiRHockey.Game
 		public int Player1Score { get; private set; }
 		public int Player2Score { get; private set; }
 
-		public Action<bool> OnReadyUp;
-		public Action<bool> OnOtherPlayerReadyUp;
 		public Action		OnGameStart;
 		public Action		OnGameEnd;
 		public Action<bool> OnGameWon;
@@ -56,7 +54,6 @@ namespace HTW.AiRHockey.Game
 			byte[] data = { (byte)GameStatePacketType.ReadyUp };
 			SendData(data);
 			IsReady = true;
-			OnReadyUp?.Invoke(true);
 		}
 
 		public void Unready()
@@ -64,7 +61,6 @@ namespace HTW.AiRHockey.Game
 			byte[] data = { (byte)GameStatePacketType.Unready };
 			SendData(data);
 			IsReady = false;
-			OnReadyUp?.Invoke(false);
 		}
 
 		public void StartGame()
@@ -116,15 +112,15 @@ namespace HTW.AiRHockey.Game
 			{
 				case GameStatePacketType.ReadyUp:
 					IsOtherPlayerReady = true;
-					OnOtherPlayerReadyUp?.Invoke(true);
 					break;
 				case GameStatePacketType.Unready:
 					IsOtherPlayerReady = false;
-					OnOtherPlayerReadyUp?.Invoke(false);
 					break;
 				case GameStatePacketType.GameStart:
 					IsGameRunning = true;
 					IsWaitingForPlayers = false;
+					IsReady = false;
+					IsOtherPlayerReady = false;
 					OnGameStart?.Invoke();
 					break;
 				case GameStatePacketType.GamePause:

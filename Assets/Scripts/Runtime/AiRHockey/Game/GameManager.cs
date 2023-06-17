@@ -64,6 +64,9 @@ namespace HTW.AiRHockey.Game
 			ModuledNetManager.OnDisconnected -= Disconnected;
 			ModuledNetManager.OnClientConnected -= ClientConnected;
 			ModuledNetManager.OnClientDisconnected -= ClientDisconnected;
+
+			if (IsOnline)
+				DisconnectFromServer();
 		}
 
 		#endregion
@@ -97,10 +100,14 @@ namespace HTW.AiRHockey.Game
 			if (!IsOnline || _gameState == null || !_gameState.IsWaitingForPlayers)
 				return;
 
-			if (!_gameState.IsReady)
+			if (!IsHost && !_gameState.IsReady)
 				_gameState.ReadyUp();
+			
 			if (IsHost && _gameState.IsOtherPlayerReady)
+			{
+				_gameState.ReadyUp();
 				_gameState.StartGame();
+			}
 		}
 
 		public void Unready()
@@ -142,7 +149,6 @@ namespace HTW.AiRHockey.Game
 			SceneManager.LoadScene("GameScene");
 
 			_gameState = new();
-			_gameState.OnOtherPlayerReadyUp += OtherPlayerReadyUp;
 			_gameState.OnGameStart += GameStarted;
 			_gameState.OnGameEnd += GameEnded;
 			_gameState.OnGameWon += GameWon;
@@ -154,7 +160,6 @@ namespace HTW.AiRHockey.Game
 
 		private void Disconnected()
 		{
-			_gameState.OnOtherPlayerReadyUp -= OtherPlayerReadyUp;
 			_gameState.OnGameStart -= GameStarted;
 			_gameState.OnGameEnd -= GameEnded;
 			_gameState.OnGameWon -= GameWon;
@@ -165,12 +170,6 @@ namespace HTW.AiRHockey.Game
 			// destroy player transform module
 
 			SceneManager.LoadScene("MainScene");
-		}
-
-		private void OtherPlayerReadyUp(bool isReady)
-		{
-			if (_gameState.IsWaitingForPlayers && isReady && _gameState.IsReady)
-				_gameState.StartGame();
 		}
 
 		private void GameStarted()
