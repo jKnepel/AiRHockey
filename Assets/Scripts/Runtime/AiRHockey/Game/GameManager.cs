@@ -140,29 +140,37 @@ namespace HTW.AiRHockey.Game
 		private void Connected()
 		{
 			SceneManager.LoadScene("GameScene");
+
 			_gameState = new();
+			_gameState.OnOtherPlayerReadyUp += OtherPlayerReadyUp;
 			_gameState.OnGameStart += GameStarted;
 			_gameState.OnGameEnd += GameEnded;
 			_gameState.OnGameWon += GameWon;
 			_gameState.OnGoalScored += GoalScored;
-			// add listener to game state module
+
 			// create player prefab
 			// create player transform module
-			// create player state module
 		}
 
 		private void Disconnected()
 		{
+			_gameState.OnOtherPlayerReadyUp -= OtherPlayerReadyUp;
 			_gameState.OnGameStart -= GameStarted;
 			_gameState.OnGameEnd -= GameEnded;
 			_gameState.OnGameWon -= GameWon;
 			_gameState.OnGoalScored -= GoalScored;
 			_gameState.Dispose();
 			_gameState = null;
-			// unregister modules
-			// reset gamestate
-			// change to main scene
+
+			// destroy player transform module
+
 			SceneManager.LoadScene("MainScene");
+		}
+
+		private void OtherPlayerReadyUp(bool isReady)
+		{
+			if (_gameState.IsWaitingForPlayers && isReady && _gameState.IsOtherPlayerReady)
+				_gameState.StartGame();
 		}
 
 		private void GameStarted()
@@ -180,13 +188,14 @@ namespace HTW.AiRHockey.Game
 		private void GameWon(bool winningPlayer)
 		{
 			string winningPlayerString = winningPlayer ? "Player 2" : "Player 1";
-			Debug.Log($"Game won by: {winningPlayerString}");
+			Debug.Log($"Game won by {winningPlayerString}");
 			GameEnded();
 		}
 
 		private void GoalScored(bool scoringPlayer)
 		{
-			
+			string scoringPlayerString = scoringPlayer ? "Player 2" : "Player 1";
+			Debug.Log($"Goal scored by {scoringPlayerString}");
 		}
 
 		private void ClientConnected(byte clientID)

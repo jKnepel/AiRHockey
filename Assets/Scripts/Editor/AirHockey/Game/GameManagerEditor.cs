@@ -92,6 +92,9 @@ namespace HTW.AiRHockey.Game
 
 				EditorGUILayout.Space();
 
+				if (GUILayout.Button("End Game"))
+					_manager.EndGame();
+
 				if (GUILayout.Button("Disconnect"))
 					_manager.DisconnectFromServer();
 			}
