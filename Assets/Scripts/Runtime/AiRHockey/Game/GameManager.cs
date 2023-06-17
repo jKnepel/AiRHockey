@@ -169,7 +169,7 @@ namespace HTW.AiRHockey.Game
 
 		private void OtherPlayerReadyUp(bool isReady)
 		{
-			if (_gameState.IsWaitingForPlayers && isReady && _gameState.IsOtherPlayerReady)
+			if (_gameState.IsWaitingForPlayers && isReady && _gameState.IsReady)
 				_gameState.StartGame();
 		}
 
