@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using CENTIS.UnityModuledNet;
 using CENTIS.UnityModuledNet.Networking;
 using CENTIS.UnityModuledNet.Managing;
+using HTW.AiRHockey.Settings;
 
 namespace HTW.AiRHockey.Game
 {
@@ -28,6 +29,8 @@ namespace HTW.AiRHockey.Game
 		public List<OpenServerInformation> OpenServers => ModuledNetManager.OpenServers;
 
 		public ModuledNetSettings NetworkSettings => ModuledNetSettings.GetOrCreateSettings();
+
+		public GameSettings GameSettings;
 
 		#endregion
 
@@ -117,6 +120,19 @@ namespace HTW.AiRHockey.Game
 			_gameState.EndGame();
 		}
 
+		public void ScoreGoal(bool scoringPlayer)
+		{
+			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning)
+				return;
+
+			_gameState.ScoreGoal(scoringPlayer);
+			if (scoringPlayer && _gameState.Player2Score >= GameSettings.DecidingScore
+				|| !scoringPlayer && _gameState.Player1Score >= GameSettings.DecidingScore)
+			{
+				_gameState.WinGame(scoringPlayer);
+			}
+		}
+
 		#endregion
 
 		#region private methods
@@ -163,24 +179,27 @@ namespace HTW.AiRHockey.Game
 
 		private void GameWon(bool winningPlayer)
 		{
-			// award win
-			// reset players
-			// reset score
+			string winningPlayerString = winningPlayer ? "Player 2" : "Player 1";
+			Debug.Log($"Game won by: {winningPlayerString}");
+			GameEnded();
 		}
 
 		private void GoalScored(bool scoringPlayer)
 		{
-
+			
 		}
 
 		private void ClientConnected(byte clientID)
-		{
-
+		{	// update new player on current state
+			if (_gameState.IsReady)
+				_gameState.ReadyUp();
 		}
 
 		private void ClientDisconnected(byte clientID)
 		{
-
+			_gameState.ResetState();
+			// reset players
+			// reset score
 		}
 
 		#endregion

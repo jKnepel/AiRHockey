@@ -40,6 +40,21 @@ namespace HTW.AiRHockey.Game
 
 		#region networking
 
+		public void SendCurrentState()
+		{
+
+		}
+
+		public void ResetState()
+		{
+			IsGameRunning = false;
+			IsWaitingForPlayers = true;
+			IsReady = false;
+			IsOtherPlayerReady = false;
+			Player1Score = 0;
+			Player2Score = 0;
+		}
+
 		public void ReadyUp()
 		{
 			IsReady = true;
@@ -79,7 +94,7 @@ namespace HTW.AiRHockey.Game
 			OnGameEnd?.Invoke();
 		}
 
-		public void GameWon(bool winningPlayer)
+		public void WinGame(bool winningPlayer)
 		{
 			byte[] data = { (byte)GameStatePacketType.GameWon, (byte)(winningPlayer ? 1 : 0) };
 			SendData(data);
@@ -88,7 +103,7 @@ namespace HTW.AiRHockey.Game
 			OnGameWon?.Invoke(winningPlayer);
 		}
 
-		public void GoalScored(bool scoringPlayer)
+		public void ScoreGoal(bool scoringPlayer)
 		{
 			byte[] data = { (byte)GameStatePacketType.Goal, (byte)(scoringPlayer ? 1 : 0) };
 			SendData(data);
