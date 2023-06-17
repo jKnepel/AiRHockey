@@ -40,11 +40,6 @@ namespace HTW.AiRHockey.Game
 
 		#region networking
 
-		public void SendCurrentState()
-		{
-
-		}
-
 		public void ResetState()
 		{
 			IsGameRunning = false;
@@ -57,18 +52,18 @@ namespace HTW.AiRHockey.Game
 
 		public void ReadyUp()
 		{
-			IsReady = true;
-			OnReadyUp?.Invoke(true);
 			byte[] data = { (byte)GameStatePacketType.ReadyUp };
 			SendData(data);
+			IsReady = true;
+			OnReadyUp?.Invoke(true);
 		}
 
 		public void Unready()
 		{
-			IsReady = false;
-			OnReadyUp?.Invoke(false);
 			byte[] data = { (byte)GameStatePacketType.Unready };
 			SendData(data);
+			IsReady = false;
+			OnReadyUp?.Invoke(false);
 		}
 
 		public void StartGame()
@@ -107,10 +102,7 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.Goal, (byte)(scoringPlayer ? 1 : 0) };
 			SendData(data);
-			if (scoringPlayer)
-				Player2Score++;
-			else
-				Player1Score++;
+			if (scoringPlayer) Player2Score++; else Player1Score++;
 			OnGoalScored?.Invoke(scoringPlayer);
 		}
 
@@ -136,7 +128,7 @@ namespace HTW.AiRHockey.Game
 				case GameStatePacketType.GameEnd:
 					IsGameRunning = false;
 					IsWaitingForPlayers = true;
-					OnGameStart?.Invoke();
+					OnGameEnd?.Invoke();
 					break;
 				case GameStatePacketType.GameWon:
 					IsGameRunning = false;
@@ -145,10 +137,7 @@ namespace HTW.AiRHockey.Game
 					break;
 				case GameStatePacketType.Goal:
 					bool scoringPlayer = data[1] != 0;
-					if (scoringPlayer)
-						Player2Score++;
-					else
-						Player1Score++;
+					if (scoringPlayer) Player2Score++; else Player1Score++;
 					OnGoalScored?.Invoke(scoringPlayer);
 					break;
 			}
