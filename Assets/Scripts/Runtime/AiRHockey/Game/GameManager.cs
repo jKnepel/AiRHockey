@@ -35,6 +35,8 @@ namespace HTW.AiRHockey.Game
 
 		#region fields
 
+		private Puck _currentPuck;
+
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
 
@@ -139,7 +141,10 @@ namespace HTW.AiRHockey.Game
 			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning)
 				return;
 
-			_gameState.ResetState();
+			_playerTransform.ResetPlayers();
+			if (_currentPuck != null)
+				Destroy(_currentPuck);
+			_currentPuck = Instantiate(GameSettings.PuckPrefab, GameSettings.InitialPuckPosition, Quaternion.identity);
 		}
 
 		public void ScoreGoal(bool scoringPlayer)
@@ -196,12 +201,15 @@ namespace HTW.AiRHockey.Game
 
 		private void GameStarted()
 		{
-			_playerTransform.ResetPlayers();
+			ResetPlayers();
 		}
 
 		private void GameEnded()
 		{
+			_gameState.ResetState();
 			_playerTransform.ResetPlayers();
+			if (_currentPuck != null)
+				Destroy(_currentPuck);
 		}
 
 		private void GameWon(bool winningPlayer)
@@ -215,10 +223,12 @@ namespace HTW.AiRHockey.Game
 		{
 			string scoringPlayerString = scoringPlayer ? "Player 2" : "Player 1";
 			Debug.Log($"Goal scored by {scoringPlayerString}");
+			ResetPlayers();
 		}
 
 		private void ClientConnected(byte clientID)
 		{	// update new player on current state
+			// TODO : delay
 			if (_gameState.IsReady)
 				_gameState.ReadyUp();
 
@@ -227,8 +237,7 @@ namespace HTW.AiRHockey.Game
 
 		private void ClientDisconnected(byte clientID)
 		{
-			_gameState.ResetState();
-			_playerTransform.ResetPlayers();
+			GameEnded();
 			_playerTransform.DestroyRemotePlayer();
 		}
 

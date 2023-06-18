@@ -15,6 +15,7 @@ MonoBehaviour:
   DecidingScore: 20
   PlayerSpeed: 20
   PlayerPrefab: {fileID: 3185162753523198689, guid: a362c3f5beaf7d242947728b8373b690, type: 3}
+  PuckPrefab: {fileID: 65194571394294315, guid: 16cacd41a7fcbba45ab90f9ba0a090c5, type: 3}
   InitialPositionPlayer1: {x: 0, y: 0.1, z: -6}
   InitialPositionPlayer2: {x: 0, y: 0.1, z: 6}
-  ResetPositions: 8
+  InitialPuckPosition: {x: 0, y: 0, z: 0}
