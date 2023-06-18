@@ -134,6 +134,14 @@ namespace HTW.AiRHockey.Game
 			_gameState.EndGame();
 		}
 
+		public void ResetPlayers()
+		{
+			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning)
+				return;
+
+			_gameState.ResetState();
+		}
+
 		public void ScoreGoal(bool scoringPlayer)
 		{
 			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning)

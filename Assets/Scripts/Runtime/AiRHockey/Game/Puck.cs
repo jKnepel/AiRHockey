@@ -16,7 +16,9 @@ namespace HTW.AiRHockey.Game
 
 		private void OnTriggerEnter(Collider other)
 		{
-			
+			Goal goal = other.GetComponent<Goal>();
+			if (goal != null)
+				InstanceFinder.GameManager.ScoreGoal(goal.Player);
 		}
 	}
 }
