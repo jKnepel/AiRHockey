@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using CENTIS.UnityModuledNet.Modules;
 
 namespace HTW.AiRHockey.Game

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -45,10 +44,7 @@ namespace HTW.AiRHockey.Game
 
 		private void OnEnable()
 		{
-			GameObject go = GameObject.Find("GameManager");
-			if (go != gameObject)
-				Destroy(gameObject);
-
+			InstanceFinder.GameManager = this;
 			DontDestroyOnLoad(gameObject);
 			NetworkSettings.MaxNumberClients = 2;
 
@@ -95,13 +91,24 @@ namespace HTW.AiRHockey.Game
 			ModuledNetManager.DisconnectFromServer();
 		}
 
+		public void UpdatePlayerTransform(Vector2 movementInput)
+		{
+			if (_gameState == null || !_gameState.IsGameRunning || _playerTransform == null)
+				return;
+
+			_playerTransform.CalculateTransform(movementInput);
+		}
+
 		public void ReadyUp()
 		{
 			if (!IsOnline || _gameState == null || !_gameState.IsWaitingForPlayers)
 				return;
 
 			if (!IsHost && !_gameState.IsReady)
+			{
 				_gameState.ReadyUp();
+				return;
+			}
 			
 			if (IsHost && _gameState.IsOtherPlayerReady)
 			{
@@ -146,7 +153,14 @@ namespace HTW.AiRHockey.Game
 
 		private void Connected()
 		{
-			SceneManager.LoadScene("GameScene");
+			StartCoroutine(LoadGameScene());
+		}
+
+		private System.Collections.IEnumerator LoadGameScene()
+		{
+			AsyncOperation sceneLoad = SceneManager.LoadSceneAsync("GameScene");
+			while (!sceneLoad.isDone)
+				yield return null;
 
 			_gameState = new();
 			_gameState.OnGameStart += GameStarted;
@@ -154,8 +168,7 @@ namespace HTW.AiRHockey.Game
 			_gameState.OnGameWon += GameWon;
 			_gameState.OnGoalScored += GoalScored;
 
-			// create player prefab
-			// create player transform module
+			_playerTransform = new(IsHost);
 		}
 
 		private void Disconnected()
@@ -167,21 +180,20 @@ namespace HTW.AiRHockey.Game
 			_gameState.Dispose();
 			_gameState = null;
 
-			// destroy player transform module
+			_playerTransform.Dispose();
+			_playerTransform = null;
 
 			SceneManager.LoadScene("MainScene");
 		}
 
 		private void GameStarted()
 		{
-			// reset players
-			// set beginning player collider
+			_playerTransform.ResetPlayers();
 		}
 
 		private void GameEnded()
 		{
-			// reset players
-			// reset score
+			_playerTransform.ResetPlayers();
 		}
 
 		private void GameWon(bool winningPlayer)
@@ -201,13 +213,15 @@ namespace HTW.AiRHockey.Game
 		{	// update new player on current state
 			if (_gameState.IsReady)
 				_gameState.ReadyUp();
+
+			_playerTransform.CreateRemotePlayer();
 		}
 
 		private void ClientDisconnected(byte clientID)
 		{
 			_gameState.ResetState();
-			// reset players
-			// reset score
+			_playerTransform.ResetPlayers();
+			_playerTransform.DestroyRemotePlayer();
 		}
 
 		#endregion

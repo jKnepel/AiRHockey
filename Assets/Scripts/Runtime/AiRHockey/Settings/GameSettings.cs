@@ -9,6 +9,11 @@ namespace HTW.AiRHockey.Settings
     {
         public int DecidingScore = 20;
 
+        public float PlayerSpeed = 20f;
+        public GameObject PlayerPrefab;
+        public Vector3 InitialPositionPlayer1 = new();
+        public Vector3 InitialPositionPlayer2 = new();
+
         // volume
 
         // keybinds

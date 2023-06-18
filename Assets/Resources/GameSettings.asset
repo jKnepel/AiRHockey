@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   DecidingScore: 20
+  PlayerSpeed: 20
+  PlayerPrefab: {fileID: 3185162753523198689, guid: a362c3f5beaf7d242947728b8373b690, type: 3}
+  InitialPositionPlayer1: {x: 0, y: 0.1, z: -6}
+  InitialPositionPlayer2: {x: 0, y: 0.1, z: 6}
   ResetPositions: 8
