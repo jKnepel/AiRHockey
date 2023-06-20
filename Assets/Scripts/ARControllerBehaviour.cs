@@ -30,30 +30,31 @@ public class ARControllerBehaviour : MonoBehaviour
 
     public void IsSelected(Single single)
     {
-        selected = !selected;
+        selected = true;
         if(selected)
         {
-            Debug.Log("Is Selected");   
+            Debug.Log("Is Selected:" + single);   
         }
     }
 
     public void IsDeselected(Single single)
     {
-        Debug.Log("Is Deselected");
+        selected = false;
+        Debug.Log("Is Deselected: " + single);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        /*
-        if(parent.gameObject.activeSelf)
+       
+        if(parent.gameObject.activeSelf && selected)
         {
             Vector3 newPosition = parent.position + offset;
             Vector3 direction = newPosition - transform.position;
             float delta = Vector3.Distance(transform.position, newPosition);
             if (!Physics.Raycast(transform.position, direction, delta, _layerMask))
-                rigidbody.MovePosition(newPosition);
+                rigidbody.MovePosition(newPosition); //Will use diffrent function from GameManager? for smoother transition
         }
-        */
+        
     }
 }
