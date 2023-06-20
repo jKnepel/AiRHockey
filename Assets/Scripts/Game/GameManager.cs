@@ -64,6 +64,11 @@ namespace HTW.AiRHockey.Game
 				ResetPositions();
 		}
 
+		public void PauseGame()
+		{
+			// TODO: pause the game
+		}
+
 		#endregion
 
 		#region private methods
