@@ -13,8 +13,6 @@ namespace HTW.AiRHockey.Game
 
 		public override string ModuleID => "PlayerTransformModule";
 
-		public Rigidbody LocalPlayer;
-		public Rigidbody RemotePlayer;
 
 		#endregion
 
@@ -22,13 +20,16 @@ namespace HTW.AiRHockey.Game
 
 		private readonly bool _isHost;
 
+		private Rigidbody _localPlayer;
+		private Rigidbody _remotePlayer;
+
 		private int _layerMask;
 
-		private const int TYPE_LENGTH = 1;
-		private const int FLOAT_LENGTH = 4;
-		private const int TYPE_OFFSET = TYPE_LENGTH + FLOAT_LENGTH;
-
 		private GameSettings _gameSettings = InstanceFinder.GameManager.GameSettings;
+		
+		private const int TYPE_LENGTH	= 1;
+		private const int FLOAT_LENGTH	= 4;
+		private const int TYPE_OFFSET	= TYPE_LENGTH + FLOAT_LENGTH;
 
 		#endregion
 
@@ -43,29 +44,29 @@ namespace HTW.AiRHockey.Game
 
 			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2;
 			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "LocalPlayer";
-			LocalPlayer = go.GetComponent<Rigidbody>();
+			go.name = "_localPlayer";
+			_localPlayer = go.GetComponent<Rigidbody>();
 		}
 
 		public void CreateRemotePlayer()
 		{
 			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1;
 			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "RemotePlayer";
-			RemotePlayer = go.GetComponent<Rigidbody>();
+			go.name = "_remotePlayer";
+			_remotePlayer = go.GetComponent<Rigidbody>();
 		}
 
 		public void DestroyRemotePlayer()
 		{
-			GameObject.Destroy(RemotePlayer.gameObject);
-			RemotePlayer = null;
+			GameObject.Destroy(_remotePlayer.gameObject);
+			_remotePlayer = null;
 		}
 
 		public void ResetPlayers()
 		{
-			LocalPlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2);
-			if (RemotePlayer != null)
-				RemotePlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1);
+			_localPlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2);
+			if (_remotePlayer != null)
+				_remotePlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1);
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
@@ -93,7 +94,7 @@ namespace HTW.AiRHockey.Game
 			else
 			{	// receive new position for host and client from host
 				PlayerTransformPacketType type = (PlayerTransformPacketType)data[0];
-				Rigidbody player = type == PlayerTransformPacketType.ClientTransform ? LocalPlayer : RemotePlayer;
+				Rigidbody player = type == PlayerTransformPacketType.ClientTransform ? _localPlayer : _remotePlayer;
 
 				byte[] positionXBytes = new byte[FLOAT_LENGTH];
 				Array.Copy(data, TYPE_LENGTH, positionXBytes, 0, FLOAT_LENGTH);
@@ -105,7 +106,7 @@ namespace HTW.AiRHockey.Game
 			}
 		}
 
-		public void CalculateTransform(Vector2 movementInput, bool isLocal = true)
+		private void CalculateTransform(Vector2 movementInput, bool isLocal = true)
 		{
 			if (!_isHost)
 			{	// send input to host
@@ -117,7 +118,7 @@ namespace HTW.AiRHockey.Game
 			}
 			else
 			{	// calculate position of current player
-				Rigidbody player = isLocal ? LocalPlayer : RemotePlayer;
+				Rigidbody player = isLocal ? _localPlayer : _remotePlayer;
 				Vector3 movement = new(movementInput.x, 0, movementInput.y);
 				Vector3 newPosition = player.transform.position + InstanceFinder.GameManager.GameSettings.PlayerSpeed * Time.fixedDeltaTime * movement;
 				Vector3 direction = newPosition - player.transform.position;
@@ -126,7 +127,7 @@ namespace HTW.AiRHockey.Game
 				if (!Physics.Raycast(player.transform.position, direction, delta, _layerMask))
 					player.MovePosition(newPosition);
 
-				if (RemotePlayer == null)
+				if (_remotePlayer == null)
 					return;
 
 				// update position on client
