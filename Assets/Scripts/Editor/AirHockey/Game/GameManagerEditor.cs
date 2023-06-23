@@ -92,6 +92,9 @@ namespace HTW.AiRHockey.Game
 
 				EditorGUILayout.Space();
 
+				if (GUILayout.Button("Reset Players"))
+					_manager.ResetPlayers();
+
 				if (GUILayout.Button("End Game"))
 					_manager.EndGame();
 
