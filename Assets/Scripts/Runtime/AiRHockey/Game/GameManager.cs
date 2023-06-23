@@ -36,9 +36,12 @@ namespace HTW.AiRHockey.Game
 		#region fields
 
 		private Puck _currentPuck;
+		// TODO : sync puck
 
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
+
+		private AsyncOperation _sceneLoadOperation;
 
 		#endregion
 
@@ -171,8 +174,8 @@ namespace HTW.AiRHockey.Game
 
 		private System.Collections.IEnumerator LoadGameScene()
 		{
-			AsyncOperation sceneLoad = SceneManager.LoadSceneAsync("GameScene");
-			while (!sceneLoad.isDone)
+			_sceneLoadOperation = SceneManager.LoadSceneAsync("GameScene");
+			while (!_sceneLoadOperation.isDone)
 				yield return null;
 
 			_gameState = new();
@@ -227,12 +230,18 @@ namespace HTW.AiRHockey.Game
 		}
 
 		private void ClientConnected(byte clientID)
-		{	// update new player on current state
-			// TODO : delay
-			if (_gameState.IsReady)
-				_gameState.ReadyUp();
+		{   // update new player on current state
+			void loadClient(AsyncOperation sceneLoad)
+			{
+				_playerTransform.CreateRemotePlayer();
+				if (_gameState.IsReady)
+					_gameState.ReadyUp();
+			}
 
-			_playerTransform.CreateRemotePlayer();
+			if (_sceneLoadOperation.isDone)
+				loadClient(_sceneLoadOperation);
+			else
+				_sceneLoadOperation.completed += loadClient;
 		}
 
 		private void ClientDisconnected(byte clientID)
