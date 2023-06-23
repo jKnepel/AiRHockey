@@ -68,6 +68,11 @@ namespace HTW.AiRHockey.Game
 				RemotePlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1);
 		}
 
+		public void UpdatePlayerTransform(Vector2 movementInput)
+		{
+			CalculateTransform(movementInput, true);
+		}
+
 		#endregion
 
 		#region networking
@@ -109,7 +114,6 @@ namespace HTW.AiRHockey.Game
 				Array.Copy(BitConverter.GetBytes(movementInput.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
 				Array.Copy(BitConverter.GetBytes(movementInput.y), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
 				SendData(data);
-				return;
 			}
 			else
 			{	// calculate position of current player

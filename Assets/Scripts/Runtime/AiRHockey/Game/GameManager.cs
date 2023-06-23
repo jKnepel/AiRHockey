@@ -118,7 +118,7 @@ namespace HTW.AiRHockey.Game
 			if (_gameState == null || !_gameState.IsGameRunning || _playerTransform == null)
 				return;
 
-			_playerTransform.CalculateTransform(movementInput);
+			_playerTransform.UpdatePlayerTransform(movementInput);
 		}
 
 		/// <summary>
