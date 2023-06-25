@@ -64,9 +64,27 @@ namespace HTW.AiRHockey.Game
 
 		public void ResetPlayers()
 		{
-			_localPlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2);
+			if (!_isHost)
+				return;
+
+			{	// reset local position and send to client
+				_localPlayer.MovePosition(_gameSettings.InitialPositionPlayer1);
+				byte[] data = new byte[9];
+				data[0] = (byte)(PlayerTransformPacketType.HostTransform);
+				Array.Copy(BitConverter.GetBytes(_localPlayer.position.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_localPlayer.position.z), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
+				SendData(data);
+			}
+
 			if (_remotePlayer != null)
-				_remotePlayer.MovePosition(_isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1);
+			{	// reset remote client position and send to client
+				_remotePlayer.MovePosition(_gameSettings.InitialPositionPlayer2);
+				byte[] data = new byte[9];
+				data[0] = (byte)(PlayerTransformPacketType.ClientTransform);
+				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.z), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
+				SendData(data);
+			}
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)

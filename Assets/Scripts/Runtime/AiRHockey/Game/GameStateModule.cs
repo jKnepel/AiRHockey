@@ -25,6 +25,7 @@ namespace HTW.AiRHockey.Game
 		public Action		OnGameEnd;
 		public Action<bool> OnGameWon;
 		public Action<bool> OnGoalScored;
+		public Action		OnResetPlayers;
 
 		#endregion
 
@@ -123,6 +124,13 @@ namespace HTW.AiRHockey.Game
 			OnGoalScored?.Invoke(scoringPlayer);
 		}
 
+		public void ResetPlayers()
+		{
+			byte[] data = { (byte)GameStatePacketType.ResetPlayers };
+			SendData(data);
+			OnResetPlayers?.Invoke();
+		}
+
 		public override void OnReceiveData(byte sender, byte[] data)
 		{
 			GameStatePacketType type = (GameStatePacketType)data[0];
@@ -159,6 +167,9 @@ namespace HTW.AiRHockey.Game
 					if (scoringPlayer) Player2Score++; else Player1Score++;
 					OnGoalScored?.Invoke(scoringPlayer);
 					break;
+				case GameStatePacketType.ResetPlayers:
+					OnResetPlayers?.Invoke();
+					break;
 			}
 		}
 
@@ -173,6 +184,7 @@ namespace HTW.AiRHockey.Game
 		GamePause,
 		GameWon,
 		GameEnd,
-		Goal
+		Goal,
+		ResetPlayers,
 	}
 }

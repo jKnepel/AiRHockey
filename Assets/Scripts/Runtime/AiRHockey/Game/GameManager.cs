@@ -183,10 +183,7 @@ namespace HTW.AiRHockey.Game
 			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning || !IsHost)
 				return;
 
-			_playerTransform.ResetPlayers();
-			if (_currentPuck != null)
-				Destroy(_currentPuck.gameObject);
-			_currentPuck = Instantiate(GameSettings.PuckPrefab, GameSettings.InitialPuckPosition, Quaternion.identity);
+			_gameState.ResetPlayers();
 		}
 
 		/// <summary>
@@ -223,6 +220,7 @@ namespace HTW.AiRHockey.Game
 				_gameState.OnGameEnd += GameEnded;
 				_gameState.OnGameWon += GameWon;
 				_gameState.OnGoalScored += GoalScored;
+				_gameState.OnResetPlayers += PlayersReset;
 
 				_playerTransform = new(IsHost);
 			}
@@ -238,6 +236,7 @@ namespace HTW.AiRHockey.Game
 				_gameState.OnGameEnd -= GameEnded;
 				_gameState.OnGameWon -= GameWon;
 				_gameState.OnGoalScored -= GoalScored;
+				_gameState.OnResetPlayers -= PlayersReset;
 				_gameState.Dispose();
 				_gameState = null;
 			}
@@ -277,6 +276,14 @@ namespace HTW.AiRHockey.Game
 			string scoringPlayerString = scoringPlayer ? "Player 2" : "Player 1";
 			Debug.Log($"Goal scored by {scoringPlayerString}");
 			ResetPlayers();
+		}
+
+		private void PlayersReset()
+		{
+			_playerTransform.ResetPlayers();
+			if (_currentPuck != null)
+				Destroy(_currentPuck.gameObject);
+			_currentPuck = Instantiate(GameSettings.PuckPrefab, GameSettings.InitialPuckPosition, Quaternion.identity);
 		}
 
 		private void ClientConnected(byte clientID)
