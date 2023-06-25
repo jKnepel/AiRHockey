@@ -84,9 +84,17 @@ namespace HTW.AiRHockey.Game
 			}
 			else
 			{
+				// score
 				EditorGUILayout.BeginHorizontal();
 				EditorGUILayout.LabelField("Score:", GUILayout.Width(EditorGUIUtility.labelWidth - 1));
 				EditorGUILayout.SelectableLabel($"{_manager.Player1Score} : {_manager.Player2Score}",
+					EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+				EditorGUILayout.EndHorizontal();
+
+				// time
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.LabelField("Time:", GUILayout.Width(EditorGUIUtility.labelWidth - 1));
+				EditorGUILayout.SelectableLabel(_manager.GameTimeText,
 					EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight));
 				EditorGUILayout.EndHorizontal();
 

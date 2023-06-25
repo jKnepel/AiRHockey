@@ -25,6 +25,17 @@ namespace HTW.AiRHockey.Game
 		public int Player1Score => _gameState?.Player1Score ?? 0;
 		public int Player2Score => _gameState?.Player2Score ?? 0;
 
+		public float GameTime => _gameState?.GameTime ?? 0;
+		public string GameTimeText
+		{
+			get
+			{
+				float minutes = Mathf.FloorToInt(GameTime / 60);
+				float seconds = Mathf.FloorToInt(GameTime % 60);
+				return string.Format("{0:00}:{1:00}", minutes, seconds);
+			}
+		}
+
 		public List<OpenServerInformation> OpenServers => ModuledNetManager.OpenServers;
 
 		public ModuledNetSettings NetworkSettings => ModuledNetSettings.GetOrCreateSettings();

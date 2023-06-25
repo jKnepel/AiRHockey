@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using CENTIS.UnityModuledNet.Modules;
 
 namespace HTW.AiRHockey.Game
@@ -18,6 +19,8 @@ namespace HTW.AiRHockey.Game
 		public int Player1Score { get; private set; }
 		public int Player2Score { get; private set; }
 
+		public float GameTime { get; private set; }
+
 		public Action		OnGameStart;
 		public Action		OnGameEnd;
 		public Action<bool> OnGameWon;
@@ -34,6 +37,13 @@ namespace HTW.AiRHockey.Game
 			Player2Score = 0;
 		}
 
+		public override void Update()
+		{
+			base.Update();
+			if (IsGameRunning)
+				GameTime += Time.deltaTime;
+		}
+
 		#endregion
 
 		#region networking
@@ -46,6 +56,7 @@ namespace HTW.AiRHockey.Game
 			IsOtherPlayerReady = false;
 			Player1Score = 0;
 			Player2Score = 0;
+			GameTime = 0;
 		}
 
 		public void ReadyUp()
@@ -70,6 +81,9 @@ namespace HTW.AiRHockey.Game
 			IsWaitingForPlayers = false;
 			IsReady = false;
 			IsOtherPlayerReady = false;
+			Player1Score = 0;
+			Player2Score = 0;
+			GameTime = 0;
 			OnGameStart?.Invoke();
 		}
 
@@ -84,6 +98,11 @@ namespace HTW.AiRHockey.Game
 			SendData(data);
 			IsGameRunning = false;
 			IsWaitingForPlayers = true;
+			IsReady = false;
+			IsOtherPlayerReady = false;
+			Player1Score = 0;
+			Player2Score = 0;
+			GameTime = 0;
 			OnGameEnd?.Invoke();
 		}
 
@@ -100,7 +119,7 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.Goal, (byte)(scoringPlayer ? 1 : 0) };
 			SendData(data);
-			if (scoringPlayer) Player2Score++; else Player1Score++;
+			if (scoringPlayer) Player2Score++; else Player1Score++;  
 			OnGoalScored?.Invoke(scoringPlayer);
 		}
 
