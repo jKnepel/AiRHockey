@@ -1,42 +1,48 @@
 using System;
-using UnityEngine;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 using TMPro;
 using Microsoft.MixedReality.Toolkit.UX;
+using CENTIS.UnityModuledNet.Networking;
+using HTW.AiRHockey.Game;
 
 namespace HTW.AiRHockey.UI
 {
     public class JoinGameMenu : MonoBehaviour
     {
-        private struct GameLobby 
-        {
-            public string _name;
-            public TimeSpan _gameTime;
-        }
+        private const int UPDATE_LOBBIES_TIMEOUT = 5000;
 
         [SerializeField] private GameObject lobbyPrefab;
         [SerializeField] private GameObject container;
-        private List<GameLobby> _lobbies;
 
+        private bool _isRunning = true;
+        
         private void OnEnable()
         {
-            _lobbies = new List<GameLobby>();
-            // TODO: get available game lobbies
-            _lobbies.Add(new GameLobby {
-                 _name = "Test Lobby", 
-                 _gameTime = new TimeSpan(0, 10, 0)
-            });
-            _lobbies.Add(new GameLobby {
-                _name = "Another Lobby",
-                _gameTime = new TimeSpan(0, 1, 0)
-            });
-            foreach (GameLobby lobby in _lobbies) {
-                GameObject entry = Instantiate(lobbyPrefab);
+            _ = UpdateOpenLobbies();
+        }
+
+		private void OnDisable()
+		{
+            _isRunning = false;
+		}
+
+		private async Task UpdateOpenLobbies()
+		{
+            if (!_isRunning)
+                return;
+
+            List<OpenServerInformation> openServers = InstanceFinder.GameManager.OpenServers;
+            foreach (OpenServerInformation lobby in openServers)
+            {
+                GameObject entry = Instantiate(lobbyPrefab, container.transform);
                 TextMeshProUGUI text = entry.GetComponentInChildren<TextMeshProUGUI>();
-                text.text = $"<size=8>{lobby._name}</size>\n<size=6><alpha=#88>{lobby._gameTime}</size>";
-                entry.transform.SetParent(container.transform, false);
+                text.text = $"<size=8>{lobby.Servername}</size>\n<size=6><alpha=#88>Is Open: {!lobby.IsServerFull}</size>";
                 // TODO: join game on button click
             }
+
+            await Task.Delay(UPDATE_LOBBIES_TIMEOUT);
         }
     }
 }

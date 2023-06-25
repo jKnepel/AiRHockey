@@ -30,8 +30,8 @@ namespace HTW.AiRHockey.Game
 		{
 			get
 			{
-				float minutes = Mathf.FloorToInt(GameTime / 60);
-				float seconds = Mathf.FloorToInt(GameTime % 60);
+				int minutes = Mathf.FloorToInt(GameTime / 60);
+				int seconds = Mathf.FloorToInt(GameTime % 60);
 				return string.Format("{0:00}:{1:00}", minutes, seconds);
 			}
 		}
