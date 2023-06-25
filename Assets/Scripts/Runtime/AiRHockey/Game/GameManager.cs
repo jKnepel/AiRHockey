@@ -271,14 +271,14 @@ namespace HTW.AiRHockey.Game
 		}
 
 		private void GoalScored(bool scoringPlayer)
-		{	// reset player and announce goal
+		{	// reset players and announce goal
 			string scoringPlayerString = scoringPlayer ? "Player 2" : "Player 1";
 			Debug.Log($"Goal scored by {scoringPlayerString}");
-			ResetPlayers();
+			PlayersReset();
 		}
 
 		private void PlayersReset()
-		{
+		{	// reset players and puck
 			_playerTransform.ResetPlayers();
 			if (_currentPuck != null)
 				Destroy(_currentPuck.gameObject);
