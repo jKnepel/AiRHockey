@@ -125,7 +125,7 @@ namespace HTW.AiRHockey.Game
 		/// <param name="movementInput"></param>
 		public void UpdatePlayerTransform(Vector2 movementInput)
 		{
-			if (_gameState == null || !_gameState.IsGameRunning || _playerTransform == null)
+			if (!IsGameRunning || _playerTransform == null)
 				return;
 
 			_playerTransform.UpdatePlayerTransform(movementInput);
@@ -136,16 +136,16 @@ namespace HTW.AiRHockey.Game
 		/// </summary>
 		public void ReadyUp()
 		{
-			if (!IsOnline || _gameState == null || !_gameState.IsWaitingForPlayers)
+			if (!IsOnline || !IsWaitingForPlayers)
 				return;
 
-			if (!IsHost && !_gameState.IsReady)
+			if (!IsHost && !IsReady)
 			{
 				_gameState.ReadyUp();
 				return;
 			}
 			
-			if (IsHost && _gameState.IsOtherPlayerReady)
+			if (IsHost && IsOtherPlayerReady)
 			{
 				_gameState.ReadyUp();
 				_gameState.StartGame();
@@ -157,7 +157,7 @@ namespace HTW.AiRHockey.Game
 		/// </summary>
 		public void Unready()
 		{
-			if (!IsOnline || _gameState == null || !_gameState.IsWaitingForPlayers)
+			if (!IsOnline || !IsWaitingForPlayers)
 				return;
 
 			if (_gameState.IsReady)
@@ -169,7 +169,7 @@ namespace HTW.AiRHockey.Game
 		/// </summary>
 		public void EndGame()
 		{
-			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning)
+			if (!IsOnline || !IsGameRunning)
 				return;
 
 			_gameState.EndGame();
@@ -180,7 +180,7 @@ namespace HTW.AiRHockey.Game
 		/// </summary>
 		public void ResetPlayers()
 		{
-			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning || !IsHost)
+			if (!IsOnline || !IsGameRunning)
 				return;
 
 			_gameState.ResetPlayers();
@@ -192,7 +192,7 @@ namespace HTW.AiRHockey.Game
 		/// <param name="scoringPlayer"></param>
 		public void ScoreGoal(bool scoringPlayer)
 		{
-			if (!IsOnline || _gameState == null || !_gameState.IsGameRunning)
+			if (!IsOnline || !IsGameRunning)
 				return;
 
 			_gameState.ScoreGoal(scoringPlayer);
@@ -252,7 +252,6 @@ namespace HTW.AiRHockey.Game
 
 		private void GameStarted()
 		{   // reset players
-			Debug.Log("start");
 			ResetPlayers();
 		}
 
