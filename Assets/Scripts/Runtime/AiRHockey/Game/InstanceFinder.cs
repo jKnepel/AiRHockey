@@ -13,9 +13,15 @@ namespace HTW.AiRHockey.Game
             set
 			{
                 if (_gameManager != null)
-                    GameObject.Destroy(value.gameObject);
-                else
-                    _gameManager = value;
+				{
+ #if UNITY_EDITOR
+                    GameObject.DestroyImmediate(_gameManager.gameObject);
+#else
+                    GameObject.Destroy(_gameManager.gameObject);
+#endif
+				}
+                
+                _gameManager = value;
 			}
 		}
     }

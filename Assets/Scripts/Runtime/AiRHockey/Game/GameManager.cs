@@ -233,21 +233,28 @@ namespace HTW.AiRHockey.Game
 
 		private void Disconnected()
 		{	// dispose modules and unload scene
-			_gameState.OnGameStart -= GameStarted;
-			_gameState.OnGameEnd -= GameEnded;
-			_gameState.OnGameWon -= GameWon;
-			_gameState.OnGoalScored -= GoalScored;
-			_gameState.Dispose();
-			_gameState = null;
+			if (_gameState != null)
+			{
+				_gameState.OnGameStart -= GameStarted;
+				_gameState.OnGameEnd -= GameEnded;
+				_gameState.OnGameWon -= GameWon;
+				_gameState.OnGoalScored -= GoalScored;
+				_gameState.Dispose();
+				_gameState = null;
+			}
 
-			_playerTransform.Dispose();
-			_playerTransform = null;
+			if (_playerTransform != null)
+			{
+				_playerTransform.Dispose();
+				_playerTransform = null;
+			}
 
 			SceneManager.LoadScene("MainScene");
 		}
 
 		private void GameStarted()
-		{	// reset players
+		{   // reset players
+			Debug.Log("start");
 			ResetPlayers();
 		}
 
