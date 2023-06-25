@@ -47,7 +47,6 @@ namespace HTW.AiRHockey.Game
 		#region fields
 
 		private Puck _currentPuck;
-		// TODO : sync puck
 
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
@@ -186,7 +185,13 @@ namespace HTW.AiRHockey.Game
 
 			_playerTransform.ResetPlayers();
 			if (_currentPuck != null)
-				Destroy(_currentPuck);
+			{
+#if UNITY_EDITOR
+				DestroyImmediate(_currentPuck.gameObject);
+#else
+				Destroy(_currentPuck.gameObject);
+#endif
+			}
 			_currentPuck = Instantiate(GameSettings.PuckPrefab, GameSettings.InitialPuckPosition, Quaternion.identity);
 		}
 
@@ -263,7 +268,13 @@ namespace HTW.AiRHockey.Game
 			_gameState.ResetState();
 			_playerTransform.ResetPlayers();
 			if (_currentPuck != null)
-				Destroy(_currentPuck);
+			{
+#if UNITY_EDITOR
+				DestroyImmediate(_currentPuck.gameObject);
+#else
+				Destroy(_currentPuck.gameObject);
+#endif
+			}
 		}
 
 		private void GameWon(bool winningPlayer)
