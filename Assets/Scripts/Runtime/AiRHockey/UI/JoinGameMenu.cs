@@ -11,7 +11,7 @@ namespace HTW.AiRHockey.UI
 {
     public class JoinGameMenu : MonoBehaviour
     {
-        private const int UPDATE_LOBBIES_TIMEOUT = 5000;
+        [SerializeField] private const int UPDATE_LOBBIES_TIMEOUT = 5000;
 
         [SerializeField] private GameObject lobbyPrefab;
         [SerializeField] private GameObject container;
