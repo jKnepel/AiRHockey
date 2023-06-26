@@ -13,7 +13,6 @@ namespace HTW.AiRHockey.Game
 
 		public override string ModuleID => "PlayerTransformModule";
 
-
 		#endregion
 
 		#region fields
@@ -44,7 +43,7 @@ namespace HTW.AiRHockey.Game
 
 			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2;
 			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "_localPlayer";
+			go.name = "LocalPlayer";
 			_localPlayer = go.GetComponent<Rigidbody>();
 		}
 
@@ -52,7 +51,7 @@ namespace HTW.AiRHockey.Game
 		{
 			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1;
 			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "_remotePlayer";
+			go.name = "RemotePlayer";
 			_remotePlayer = go.GetComponent<Rigidbody>();
 		}
 

@@ -78,6 +78,17 @@ namespace HTW.AiRHockey.Game
 
 			if (IsOnline)
 				DisconnectFromServer();
+
+			if (_gameState != null)
+				_gameState.Dispose();
+
+			if (_playerTransform != null)
+				_playerTransform.Dispose();
+		}
+
+		private void OnDestroy()
+		{
+			OnDisable();
 		}
 
 		#endregion
