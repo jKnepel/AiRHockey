@@ -444,6 +444,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "de.htw-berlin.centis.unity-moduled-net": {
+      "version": "https://github.com/CENTIS-HTW/UnityModuledNet.git#0.2.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "1bc448b84ab048f72315f3465624b633675265a8"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
