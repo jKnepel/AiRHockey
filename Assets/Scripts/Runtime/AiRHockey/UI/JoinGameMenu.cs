@@ -33,13 +33,24 @@ namespace HTW.AiRHockey.UI
             if (!_isRunning)
                 return;
 
+            // destroy old prefabs
+            while (container.transform.childCount > 0)
+			{
+#if UNITY_EDITOR
+                DestroyImmediate(container.transform.GetChild(0).gameObject);
+#else
+                Destroy(container.transform.GetChild(0).gameObject);
+#endif
+            }
+
+            // create new prefab buttons for each lobby
             List<OpenServerInformation> openServers = InstanceFinder.GameManager.OpenServers;
             foreach (OpenServerInformation lobby in openServers)
             {
                 GameObject entry = Instantiate(lobbyPrefab, container.transform);
                 TextMeshProUGUI text = entry.GetComponentInChildren<TextMeshProUGUI>();
                 text.text = $"<size=8>{lobby.Servername}</size>\n<size=6><alpha=#88>Is Open: {!lobby.IsServerFull}</size>";
-                // TODO: join game on button click
+                entry.GetComponent<PressableButton>().OnClicked.AddListener(() => InstanceFinder.GameManager.JoinServer(lobby.IP));
             }
 
             await Task.Delay(UPDATE_LOBBIES_TIMEOUT);
