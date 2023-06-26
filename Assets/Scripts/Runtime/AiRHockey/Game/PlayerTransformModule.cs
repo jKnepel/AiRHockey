@@ -22,7 +22,7 @@ namespace HTW.AiRHockey.Game
 		private Rigidbody _localPlayer;
 		private Rigidbody _remotePlayer;
 
-		private int _layerMask;
+		private readonly int _layerMask;
 
 		private GameSettings _gameSettings = InstanceFinder.GameManager.GameSettings;
 		
