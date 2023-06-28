@@ -25,6 +25,14 @@ namespace HTW.AiRHockey.Game
 		public int Player1Score => _gameState?.Player1Score ?? 0;
 		public int Player2Score => _gameState?.Player2Score ?? 0;
 
+		public PlayerUI PlayerUI
+        {
+            set
+            {
+				_playerUI = value;
+            }
+        }
+
 		public float GameTime => _gameState?.GameTime ?? 0;
 		public string GameTimeText
 		{
@@ -32,7 +40,13 @@ namespace HTW.AiRHockey.Game
 			{
 				int minutes = Mathf.FloorToInt(GameTime / 60);
 				int seconds = Mathf.FloorToInt(GameTime % 60);
-				return string.Format("{0:00}:{1:00}", minutes, seconds);
+				if(minutes >= 100)
+                {
+					return string.Format("99:99");
+                } else
+                {
+					return string.Format("{0:00}:{1:00}", minutes, seconds);
+                }
 			}
 		}
 
@@ -50,6 +64,7 @@ namespace HTW.AiRHockey.Game
 
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
+		private PlayerUI _playerUI;
 
 		private AsyncOperation _sceneLoadOperation;
 
@@ -222,7 +237,7 @@ namespace HTW.AiRHockey.Game
 		{   // load scene, gamestate module and player module
 			System.Collections.IEnumerator LoadGameScene()
 			{
-				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameScene");
+				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameSceneTest");
 				while (!_sceneLoadOperation.isDone)
 					yield return null;
 
@@ -233,6 +248,11 @@ namespace HTW.AiRHockey.Game
 				_gameState.OnGoalScored += GoalScored;
 				_gameState.OnResetPlayers += PlayersReset;
 
+				if(_playerUI)
+                {
+					Debug.Log("Test");
+					_gameState.OnGoalScored += _playerUI.OnGoalScored;
+                }
 				_playerTransform = new(IsHost);
 			}
 
