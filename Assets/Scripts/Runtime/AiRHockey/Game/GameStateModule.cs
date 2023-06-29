@@ -21,12 +21,6 @@ namespace HTW.AiRHockey.Game
 
 		public float GameTime { get; private set; }
 
-		public Action		OnGameStart;
-		public Action		OnGameEnd;
-		public Action<bool> OnGameWon;
-		public Action<bool> OnGoalScored;
-		public Action		OnResetPlayers;
-
 		#endregion
 
 		#region lifecycle
@@ -85,7 +79,7 @@ namespace HTW.AiRHockey.Game
 			Player1Score = 0;
 			Player2Score = 0;
 			GameTime = 0;
-			OnGameStart?.Invoke();
+			GameManagerEvents.OnGameStart?.Invoke();
 		}
 
 		public void GamePause()
@@ -104,7 +98,7 @@ namespace HTW.AiRHockey.Game
 			Player1Score = 0;
 			Player2Score = 0;
 			GameTime = 0;
-			OnGameEnd?.Invoke();
+			GameManagerEvents.OnGameEnd?.Invoke();
 		}
 
 		public void WinGame(bool winningPlayer)
@@ -113,22 +107,22 @@ namespace HTW.AiRHockey.Game
 			SendData(data);
 			IsGameRunning = false;
 			IsWaitingForPlayers = true;
-			OnGameWon?.Invoke(winningPlayer);
+			GameManagerEvents.OnGameWon?.Invoke(winningPlayer);
 		}
 
 		public void ScoreGoal(bool scoringPlayer)
 		{
 			byte[] data = { (byte)GameStatePacketType.Goal, (byte)(scoringPlayer ? 1 : 0) };
 			SendData(data);
-			if (scoringPlayer) Player2Score++; else Player1Score++;  
-			OnGoalScored?.Invoke(scoringPlayer);
+			if (scoringPlayer) Player2Score++; else Player1Score++;
+			GameManagerEvents.OnGoalScored?.Invoke(scoringPlayer);
 		}
 
 		public void ResetPlayers()
 		{
 			byte[] data = { (byte)GameStatePacketType.ResetPlayers };
 			SendData(data);
-			OnResetPlayers?.Invoke();
+			GameManagerEvents.OnResetPlayers?.Invoke();
 		}
 
 		public override void OnReceiveData(byte sender, byte[] data)
@@ -147,7 +141,7 @@ namespace HTW.AiRHockey.Game
 					IsWaitingForPlayers = false;
 					IsReady = false;
 					IsOtherPlayerReady = false;
-					OnGameStart?.Invoke();
+					GameManagerEvents.OnGameStart?.Invoke();
 					break;
 				case GameStatePacketType.GamePause:
 
@@ -155,20 +149,20 @@ namespace HTW.AiRHockey.Game
 				case GameStatePacketType.GameEnd:
 					IsGameRunning = false;
 					IsWaitingForPlayers = true;
-					OnGameEnd?.Invoke();
+					GameManagerEvents.OnGameEnd?.Invoke();
 					break;
 				case GameStatePacketType.GameWon:
 					IsGameRunning = false;
 					IsWaitingForPlayers = true;
-					OnGameWon?.Invoke(data[1] != 0);
+					GameManagerEvents.OnGameWon?.Invoke(data[1] != 0);
 					break;
 				case GameStatePacketType.Goal:
 					bool scoringPlayer = data[1] != 0;
 					if (scoringPlayer) Player2Score++; else Player1Score++;
-					OnGoalScored?.Invoke(scoringPlayer);
+					GameManagerEvents.OnGoalScored?.Invoke(scoringPlayer);
 					break;
 				case GameStatePacketType.ResetPlayers:
-					OnResetPlayers?.Invoke();
+					GameManagerEvents.OnResetPlayers?.Invoke();
 					break;
 			}
 		}

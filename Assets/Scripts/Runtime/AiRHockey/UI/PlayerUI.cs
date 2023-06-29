@@ -8,27 +8,20 @@ namespace HTW.AiRHockey.Game
 {
     public class PlayerUI : MonoBehaviour
     {
-        [SerializeField]
-        private TextMeshPro[] timer;
-        [SerializeField]
-        private TextMeshPro[] Player1Score;
-        [SerializeField]
-        private TextMeshPro[] Player2Score;
-        private GameManager manager;
-        // Start is called before the first frame update
-        void Start()
-        {
-            if(!manager)
-            {
-                manager = InstanceFinder.GameManager;
-                manager.PlayerUI = this;
-            }
-        }
 
-        // Update is called once per frame
-        void Update()
+        [SerializeField] private TextMeshPro[] timer;
+
+        [SerializeField] private TextMeshPro[] Player1Score;
+        [SerializeField] private TextMeshPro[] Player2Score;
+
+        private void Start()
+		{
+            GameManagerEvents.OnGoalScored += OnGoalScored;
+		}
+
+        private void Update()
         {
-            if(manager.IsGameRunning)
+            if(InstanceFinder.GameManager.IsGameRunning)
             {
                 UpdateTimer();
             }
@@ -38,10 +31,10 @@ namespace HTW.AiRHockey.Game
         {
             if(player)
             {
-                UpdatePlayer1Score();
+                UpdatePlayer2Score();
             } else
             {
-                UpdatePlayer2Score();
+                UpdatePlayer1Score();
             }
         }
 
@@ -49,7 +42,7 @@ namespace HTW.AiRHockey.Game
         {
             foreach(TextMeshPro textMesh in Player1Score)
             {
-                textMesh.text = string.Format("{0:00}", manager.Player1Score);
+                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
             }
         }
 
@@ -57,7 +50,7 @@ namespace HTW.AiRHockey.Game
         {
             foreach (TextMeshPro textMesh in Player2Score)
             {
-                textMesh.text = string.Format("{0:00}", manager.Player1Score);
+                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
             }
         }
 
@@ -65,7 +58,7 @@ namespace HTW.AiRHockey.Game
         {
             foreach(TextMeshPro textMesh in timer)
             {
-                textMesh.text = manager.GameTimeText;
+                textMesh.text = InstanceFinder.GameManager.GameTimeText;
             }
         }
     }

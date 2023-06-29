@@ -25,14 +25,6 @@ namespace HTW.AiRHockey.Game
 		public int Player1Score => _gameState?.Player1Score ?? 0;
 		public int Player2Score => _gameState?.Player2Score ?? 0;
 
-		public PlayerUI PlayerUI
-        {
-            set
-            {
-				_playerUI = value;
-            }
-        }
-
 		public float GameTime => _gameState?.GameTime ?? 0;
 		public string GameTimeText
 		{
@@ -40,13 +32,9 @@ namespace HTW.AiRHockey.Game
 			{
 				int minutes = Mathf.FloorToInt(GameTime / 60);
 				int seconds = Mathf.FloorToInt(GameTime % 60);
-				if(minutes >= 100)
-                {
+				if (minutes >= 100)
 					return string.Format("99:99");
-                } else
-                {
-					return string.Format("{0:00}:{1:00}", minutes, seconds);
-                }
+				return string.Format("{0:00}:{1:00}", minutes, seconds);
 			}
 		}
 
@@ -64,7 +52,6 @@ namespace HTW.AiRHockey.Game
 
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
-		private PlayerUI _playerUI;
 
 		private AsyncOperation _sceneLoadOperation;
 
@@ -242,18 +229,14 @@ namespace HTW.AiRHockey.Game
 					yield return null;
 
 				_gameState = new();
-				_gameState.OnGameStart += GameStarted;
-				_gameState.OnGameEnd += GameEnded;
-				_gameState.OnGameWon += GameWon;
-				_gameState.OnGoalScored += GoalScored;
-				_gameState.OnResetPlayers += PlayersReset;
-
-				if(_playerUI)
-                {
-					Debug.Log("Test");
-					_gameState.OnGoalScored += _playerUI.OnGoalScored;
-                }
 				_playerTransform = new(IsHost);
+
+				GameManagerEvents.OnGameStart += GameStarted;
+				GameManagerEvents.OnGameEnd += GameEnded;
+				GameManagerEvents.OnGameWon += GameWon;
+				GameManagerEvents.OnGoalScored += GoalScored;
+				GameManagerEvents.OnResetPlayers += PlayersReset;
+
 			}
 
 			StartCoroutine(LoadGameScene());
@@ -261,15 +244,16 @@ namespace HTW.AiRHockey.Game
 
 		private void Disconnected()
 		{	// dispose modules and unload scene
+			GameManagerEvents.OnGameStart -= GameStarted;
+			GameManagerEvents.OnGameEnd -= GameEnded;
+			GameManagerEvents.OnGameWon -= GameWon;
+			GameManagerEvents.OnGoalScored -= GoalScored;
+			GameManagerEvents.OnResetPlayers -= PlayersReset;
+			
 			if (_gameState != null)
 			{
-				_gameState.OnGameStart -= GameStarted;
-				_gameState.OnGameEnd -= GameEnded;
-				_gameState.OnGameWon -= GameWon;
-				_gameState.OnGoalScored -= GoalScored;
-				_gameState.OnResetPlayers -= PlayersReset;
-				_gameState.Dispose();
 				_gameState = null;
+				_gameState.Dispose();
 			}
 
 			if (_playerTransform != null)
