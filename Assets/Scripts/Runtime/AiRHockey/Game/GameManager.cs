@@ -46,8 +46,6 @@ namespace HTW.AiRHockey.Game
 
 		#region fields
 
-		private Puck _currentPuck;
-
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
 
@@ -263,15 +261,13 @@ namespace HTW.AiRHockey.Game
 
 		private void GameStarted()
 		{   // reset players
-			ResetPlayers();
+			_playerTransform.ResetPlayers();
 		}
 
 		private void GameEnded()
 		{	// reset state and players, destroy puck
 			_gameState.ResetState();
-			_playerTransform.ResetPlayers();
-			if (_currentPuck != null)
-				Destroy(_currentPuck.gameObject);
+			_playerTransform.ResetPlayers(false);
 		}
 
 		private void GameWon(bool winningPlayer)
@@ -285,15 +281,12 @@ namespace HTW.AiRHockey.Game
 		{	// reset players and announce goal
 			string scoringPlayerString = scoringPlayer ? "Player 2" : "Player 1";
 			Debug.Log($"Goal scored by {scoringPlayerString}");
-			PlayersReset();
+			_playerTransform.ResetPlayers();
 		}
 
 		private void PlayersReset()
 		{	// reset players and puck
 			_playerTransform.ResetPlayers();
-			if (_currentPuck != null)
-				Destroy(_currentPuck.gameObject);
-			_currentPuck = Instantiate(GameSettings.PuckPrefab, GameSettings.InitialPuckPosition, Quaternion.identity);
 		}
 
 		private void ClientConnected(byte clientID)
