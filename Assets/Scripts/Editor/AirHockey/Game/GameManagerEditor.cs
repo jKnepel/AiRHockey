@@ -10,6 +10,11 @@ namespace HTW.AiRHockey.Game
     public class GameManagerEditor : Editor
     {
 		private GameManager _manager;
+		private Editor		_gameSettingsEditor;
+		private Editor		_networkSettingsEditor;
+
+		private bool _showGameSettings = false;
+		private bool _showNetworkSettings = false;
 
 		private string _newServerName = string.Empty;
 
@@ -18,11 +23,33 @@ namespace HTW.AiRHockey.Game
 		private void OnEnable()
 		{
 			_manager = (GameManager)target;
+			_gameSettingsEditor = CreateEditor(_manager.GameSettings);
+			_networkSettingsEditor = CreateEditor(_manager.NetworkSettings);
 		}
 
 		public override void OnInspectorGUI()
 		{
 			base.OnInspectorGUI();
+
+			_showGameSettings = EditorGUILayout.Foldout(_showGameSettings, "Game Settings", EditorStyles.foldoutHeader);
+			if (_showGameSettings)
+			{
+				EditorGUI.indentLevel++;
+				_gameSettingsEditor.OnInspectorGUI();
+				EditorGUILayout.Space();
+				EditorGUI.indentLevel--;
+			}
+
+			_showNetworkSettings = EditorGUILayout.Foldout(_showNetworkSettings, "Network Settings", EditorStyles.foldoutHeader);
+			if (_showNetworkSettings)
+			{
+				EditorGUI.indentLevel++;
+				_networkSettingsEditor.OnInspectorGUI();
+				EditorGUILayout.Space();
+				EditorGUI.indentLevel--;
+			}
+
+			EditorGUILayout.Space();
 
 			EditorGUILayout.Toggle("Is Online:", _manager.IsOnline);
 			EditorGUILayout.Toggle("Is Host:", _manager.IsHost);
@@ -31,7 +58,6 @@ namespace HTW.AiRHockey.Game
 			EditorGUILayout.Toggle("Is Ready:", _manager.IsReady);
 			EditorGUILayout.Toggle("Is Other Player Ready:", _manager.IsOtherPlayerReady);
 
-			EditorGUILayout.Space();
 			EditorGUILayout.Space();
 
 			if (!_manager.IsOnline)
