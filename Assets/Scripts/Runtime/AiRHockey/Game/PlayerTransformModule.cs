@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CENTIS.UnityModuledNet.Modules;
 using HTW.AiRHockey.Settings;
@@ -83,12 +81,12 @@ namespace HTW.AiRHockey.Game
 			_remotePlayer = null;
 		}
 
-		public void ResetPlayers(bool reinstatePuck = true)
+		public void ResetPlayers(bool reinstantiatePuck = true)
 		{
 			if (_currentPuck != null)
 				GameObject.Destroy(_currentPuck.gameObject);
 
-			if (reinstatePuck)
+			if (reinstantiatePuck)
 			{
 				_currentPuck = GameObject.Instantiate(_gameSettings.PuckPrefab, _gameSettings.InitialPuckPosition, Quaternion.identity).GetComponent<Rigidbody>();
 				if (!_isHost) _currentPuck.isKinematic = true;
@@ -127,7 +125,7 @@ namespace HTW.AiRHockey.Game
 			}
 			else
 			{   // receive new position for host, client and puck from host
-				{	// update host position
+				{	// update client position
 					byte[] positionXBytes = new byte[FLOAT_LENGTH];
 					Array.Copy(data, FLOAT_LENGTH * 0, positionXBytes, 0, FLOAT_LENGTH);
 					float positionX = BitConverter.ToSingle(positionXBytes);
@@ -140,7 +138,7 @@ namespace HTW.AiRHockey.Game
 				}
 
 				if (_remotePlayer != null)
-				{   // update client position
+				{   // update host position
 					byte[] positionXBytes = new byte[FLOAT_LENGTH];
 					Array.Copy(data, FLOAT_LENGTH * 2, positionXBytes, 0, FLOAT_LENGTH);
 					float positionX = BitConverter.ToSingle(positionXBytes);
@@ -187,7 +185,7 @@ namespace HTW.AiRHockey.Game
 		}
 
 		private void SendInputToHost()
-		{
+		{	// update clients directional input on host
 			if (_clientsLastDirectionalInput == _clientsDirectionalInput)
 				return;
 
@@ -199,8 +197,7 @@ namespace HTW.AiRHockey.Game
 		}
 
 		private void SendTransformsToClient()
-		{
-			// update position of host, client and puck on client
+		{	// update position of host, client and puck on client
 			byte[] data = new byte[FLOAT_LENGTH * 6];
 			if (_remotePlayer != null)
 			{
