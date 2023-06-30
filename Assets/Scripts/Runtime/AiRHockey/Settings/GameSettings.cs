@@ -17,8 +17,8 @@ namespace HTW.AiRHockey.Settings
         public GameObject   PlayerPrefab;
         public Puck         PuckPrefab;
 
-        public Vector3 InitialPositionPlayer1   = new();
-        public Vector3 InitialPositionPlayer2   = new();
+        public Vector3 InitialPositionHost   = new();
+        public Vector3 InitialPositionClient   = new();
         public Vector3 InitialPuckPosition      = new();
     }
 }

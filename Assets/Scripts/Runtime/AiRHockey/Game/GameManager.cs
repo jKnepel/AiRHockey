@@ -272,14 +272,14 @@ namespace HTW.AiRHockey.Game
 
 		private void GameWon(bool winningPlayer)
 		{	// end game and announce win
-			string winningPlayerString = winningPlayer ? "Player 2" : "Player 1";
+			string winningPlayerString = winningPlayer ? "Client" : "Host";
 			Debug.Log($"Game won by {winningPlayerString}");
 			GameEnded();
 		}
 
 		private void GoalScored(bool scoringPlayer)
 		{	// reset players and announce goal
-			string scoringPlayerString = scoringPlayer ? "Player 2" : "Player 1";
+			string scoringPlayerString = scoringPlayer ? "Client" : "Host";
 			Debug.Log($"Goal scored by {scoringPlayerString}");
 			_playerTransform.ResetPlayers();
 		}

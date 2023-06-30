@@ -7,7 +7,7 @@ namespace HTW.AiRHockey.Game
 {
 	public class PlayerTransformModule : UnreliableModule
 	{
-		#region lifecycle
+		#region properties
 
 		public override string ModuleID => "PlayerTransformModule";
 
@@ -43,10 +43,9 @@ namespace HTW.AiRHockey.Game
 				| (1 << LayerMask.NameToLayer("Player Barrier")) 
 				| (1 << LayerMask.NameToLayer("Puck"));
 
-			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2;
-			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "LocalPlayer";
-			_localPlayer = go.GetComponent<Rigidbody>();
+			Vector3 position = _isHost ? _gameSettings.InitialPositionHost : _gameSettings.InitialPositionClient;
+			_localPlayer = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
+			_localPlayer.gameObject.name = "LocalPlayer";
 		}
 
 		public override void Update()
@@ -69,10 +68,9 @@ namespace HTW.AiRHockey.Game
 
 		public void CreateRemotePlayer()
 		{
-			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1;
-			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "RemotePlayer";
-			_remotePlayer = go.GetComponent<Rigidbody>();
+			Vector3 position = _isHost ? _gameSettings.InitialPositionClient : _gameSettings.InitialPositionHost;
+			_remotePlayer = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
+			_remotePlayer.gameObject.name = "RemotePlayer";
 		}
 
 		public void DestroyRemotePlayer()
@@ -95,9 +93,9 @@ namespace HTW.AiRHockey.Game
 			if (!_isHost)
 				return;
 			
-			_localPlayer.position = _gameSettings.InitialPositionPlayer1;
+			_localPlayer.position = _gameSettings.InitialPositionHost;
 			if (_remotePlayer != null)
-				_remotePlayer.position = _gameSettings.InitialPositionPlayer2;
+				_remotePlayer.position = _gameSettings.InitialPositionClient;
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
