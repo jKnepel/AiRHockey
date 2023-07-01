@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using CENTIS.UnityModuledNet.Modules;
 using HTW.AiRHockey.Settings;
@@ -9,7 +7,7 @@ namespace HTW.AiRHockey.Game
 {
 	public class PlayerTransformModule : UnreliableModule
 	{
-		#region lifecycle
+		#region properties
 
 		public override string ModuleID => "PlayerTransformModule";
 
@@ -19,16 +17,20 @@ namespace HTW.AiRHockey.Game
 
 		private readonly bool _isHost;
 
-		private Rigidbody _localPlayer;
-		private Rigidbody _remotePlayer;
-
 		private readonly int _layerMask;
 
-		private GameSettings _gameSettings = InstanceFinder.GameManager.GameSettings;
+		private Rigidbody	_currentPuck;
+		private Rigidbody	_localPlayer;
+		private Rigidbody	_remotePlayer;
+
+		private float _time = 0;
 		
-		private const int TYPE_LENGTH	= 1;
+		private Vector2 _clientsDirectionalInput		= new();
+		private Vector2 _clientsLastDirectionalInput	= new();
+
+		private GameSettings _gameSettings = InstanceFinder.GameManager.GameSettings;
+
 		private const int FLOAT_LENGTH	= 4;
-		private const int TYPE_OFFSET	= TYPE_LENGTH + FLOAT_LENGTH;
 
 		#endregion
 
@@ -37,22 +39,38 @@ namespace HTW.AiRHockey.Game
 		public PlayerTransformModule(bool isHost)
 		{
 			_isHost = isHost;
-			_layerMask = (TYPE_LENGTH << LayerMask.NameToLayer("Barrier")) 
-				| (TYPE_LENGTH << LayerMask.NameToLayer("Player Barrier")) 
-				| (TYPE_LENGTH << LayerMask.NameToLayer("Puck"));
+			_layerMask = (1 << LayerMask.NameToLayer("Barrier")) 
+				| (1 << LayerMask.NameToLayer("Player Barrier")) 
+				| (1 << LayerMask.NameToLayer("Puck"));
 
-			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer1 : _gameSettings.InitialPositionPlayer2;
-			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "LocalPlayer";
-			_localPlayer = go.GetComponent<Rigidbody>();
+			Vector3 position = _isHost ? _gameSettings.InitialPositionHost : _gameSettings.InitialPositionClient;
+			_localPlayer = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
+			_localPlayer.gameObject.name = "LocalPlayer";
+		}
+
+		public override void Update()
+		{
+			base.Update();
+
+			if (_remotePlayer == null)
+				return;
+
+			_time += Time.deltaTime;
+			if (_time >= (float)(1 / (float)_gameSettings.TransformSendHertz))
+			{	// limit client update to given hertz
+				if (_isHost)
+					SendTransformsToClient();
+				else
+					SendInputToHost();
+				_time = 0;
+			}
 		}
 
 		public void CreateRemotePlayer()
 		{
-			Vector3 position = _isHost ? _gameSettings.InitialPositionPlayer2 : _gameSettings.InitialPositionPlayer1;
-			GameObject go = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity);
-			go.name = "RemotePlayer";
-			_remotePlayer = go.GetComponent<Rigidbody>();
+			Vector3 position = _isHost ? _gameSettings.InitialPositionClient : _gameSettings.InitialPositionHost;
+			_remotePlayer = GameObject.Instantiate(_gameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
+			_remotePlayer.gameObject.name = "RemotePlayer";
 		}
 
 		public void DestroyRemotePlayer()
@@ -61,29 +79,23 @@ namespace HTW.AiRHockey.Game
 			_remotePlayer = null;
 		}
 
-		public void ResetPlayers()
+		public void ResetPlayers(bool reinstantiatePuck = true)
 		{
+			if (_currentPuck != null)
+				GameObject.Destroy(_currentPuck.gameObject);
+
+			if (reinstantiatePuck)
+			{
+				_currentPuck = GameObject.Instantiate(_gameSettings.PuckPrefab, _gameSettings.InitialPuckPosition, Quaternion.identity).GetComponent<Rigidbody>();
+				if (!_isHost) _currentPuck.isKinematic = true;
+			}
+			
 			if (!_isHost)
 				return;
-
-			{   // reset local position and send to client
-				_localPlayer.position = _gameSettings.InitialPositionPlayer1;
-				byte[] data = new byte[9];
-				data[0] = (byte)(PlayerTransformPacketType.HostTransform);
-				Array.Copy(BitConverter.GetBytes(_localPlayer.position.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(_localPlayer.position.z), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
-				SendData(data);
-			}
-
+			
+			_localPlayer.position = _isHost ? _gameSettings.InitialPositionHost : _gameSettings.InitialPositionClient;
 			if (_remotePlayer != null)
-			{	// reset remote client position and send to client
-				_remotePlayer.position = _gameSettings.InitialPositionPlayer2;
-				byte[] data = new byte[9];
-				data[0] = (byte)(PlayerTransformPacketType.ClientTransform);
-				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.z), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
-				SendData(data);
-			}
+				_remotePlayer.position = _isHost ? _gameSettings.InitialPositionClient : _gameSettings.InitialPositionHost;
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
@@ -100,68 +112,110 @@ namespace HTW.AiRHockey.Game
 			if (_isHost)
 			{	// receive input from client and calculate new position
 				byte[] movementXBytes = new byte[FLOAT_LENGTH];
-				Array.Copy(data, TYPE_LENGTH, movementXBytes, 0, FLOAT_LENGTH);
+				Array.Copy(data, FLOAT_LENGTH * 0, movementXBytes, 0, FLOAT_LENGTH);
 				float movementX = BitConverter.ToSingle(movementXBytes);
+
 				byte[] movementYBytes = new byte[FLOAT_LENGTH];
-				Array.Copy(data, TYPE_OFFSET, movementYBytes, 0, FLOAT_LENGTH);
+				Array.Copy(data, FLOAT_LENGTH * 1, movementYBytes, 0, FLOAT_LENGTH);
 				float movementY = BitConverter.ToSingle(movementYBytes);
 
 				CalculateTransform(new(movementX, movementY), false);
 			}
 			else
-			{	// receive new position for host and client from host
-				PlayerTransformPacketType type = (PlayerTransformPacketType)data[0];
-				Rigidbody player = type == PlayerTransformPacketType.ClientTransform ? _localPlayer : _remotePlayer;
+			{   // receive new position for host, client and puck from host
+				{	// update client position
+					byte[] positionXBytes = new byte[FLOAT_LENGTH];
+					Array.Copy(data, FLOAT_LENGTH * 0, positionXBytes, 0, FLOAT_LENGTH);
+					float positionX = BitConverter.ToSingle(positionXBytes);
 
-				byte[] positionXBytes = new byte[FLOAT_LENGTH];
-				Array.Copy(data, TYPE_LENGTH, positionXBytes, 0, FLOAT_LENGTH);
-				float positionX = BitConverter.ToSingle(positionXBytes);
-				byte[] positionYBytes = new byte[FLOAT_LENGTH];
-				Array.Copy(data, TYPE_OFFSET, positionYBytes, 0, FLOAT_LENGTH);
-				float positionY = BitConverter.ToSingle(positionYBytes);
-				player.MovePosition(new(positionX, player.position.y, positionY));
+					byte[] positionZBytes = new byte[FLOAT_LENGTH];
+					Array.Copy(data, FLOAT_LENGTH * 1, positionZBytes, 0, FLOAT_LENGTH);
+					float positionZ = BitConverter.ToSingle(positionZBytes);
+
+					_localPlayer.MovePosition(new(positionX, _localPlayer.position.y, positionZ));
+				}
+
+				if (_remotePlayer != null)
+				{   // update host position
+					byte[] positionXBytes = new byte[FLOAT_LENGTH];
+					Array.Copy(data, FLOAT_LENGTH * 2, positionXBytes, 0, FLOAT_LENGTH);
+					float positionX = BitConverter.ToSingle(positionXBytes);
+
+					byte[] positionZBytes = new byte[FLOAT_LENGTH];
+					Array.Copy(data, FLOAT_LENGTH * 3, positionZBytes, 0, FLOAT_LENGTH);
+					float positionZ = BitConverter.ToSingle(positionZBytes);
+
+					_remotePlayer.MovePosition(new(positionX, _remotePlayer.position.y, positionZ));
+				}
+
+				if (_currentPuck != null)
+				{	// update puck position
+					byte[] positionXBytes = new byte[FLOAT_LENGTH];
+					Array.Copy(data, FLOAT_LENGTH * 4, positionXBytes, 0, FLOAT_LENGTH);
+					float positionX = BitConverter.ToSingle(positionXBytes);
+
+					byte[] positionZBytes = new byte[FLOAT_LENGTH];
+					Array.Copy(data, FLOAT_LENGTH * 5, positionZBytes, 0, FLOAT_LENGTH);
+					float positionZ = BitConverter.ToSingle(positionZBytes);
+
+					_currentPuck.MovePosition(new(positionX, _currentPuck.position.y, positionZ));
+				}
 			}
 		}
 
 		private void CalculateTransform(Vector2 movementInput, bool isLocal = true)
 		{
 			if (!_isHost)
-			{	// send input to host
-				byte[] data = new byte[9];
-				data[0] = (byte)PlayerTransformPacketType.ClientTransform;
-				Array.Copy(BitConverter.GetBytes(movementInput.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(movementInput.y), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
-				SendData(data);
+			{   // save directional input as client
+				_clientsDirectionalInput = movementInput;
 			}
 			else
-			{	// calculate position of current player
+			{	// calculate position of current player as host
 				Rigidbody player = isLocal ? _localPlayer : _remotePlayer;
 				Vector3 movement = new(movementInput.x, 0, movementInput.y);
-				Vector3 newPosition = player.transform.position + InstanceFinder.GameManager.GameSettings.PlayerSpeed * Time.fixedDeltaTime * movement;
+				Vector3 newPosition = player.transform.position + _gameSettings.PlayerSpeed * Time.fixedDeltaTime * movement;
 				Vector3 direction = newPosition - player.transform.position;
 				float delta = Vector3.Distance(player.transform.position, newPosition);
 
 				if (!Physics.Raycast(player.transform.position, direction, delta, _layerMask))
 					player.MovePosition(newPosition);
-
-				if (_remotePlayer == null)
-					return;
-
-				// update position on client
-				byte[] data = new byte[9];
-				data[0] = (byte)(isLocal ? PlayerTransformPacketType.HostTransform : PlayerTransformPacketType.ClientTransform);
-				Array.Copy(BitConverter.GetBytes(player.position.x), 0, data, TYPE_LENGTH, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(player.position.z), 0, data, TYPE_OFFSET, FLOAT_LENGTH);
-				SendData(data);
 			}
 		}
 
-		#endregion
-	}
+		private void SendInputToHost()
+		{	// update clients directional input on host
+			if (_clientsLastDirectionalInput == _clientsDirectionalInput)
+				return;
 
-	public enum PlayerTransformPacketType : byte
-	{
-		HostTransform,
-		ClientTransform
+			byte[] data = new byte[FLOAT_LENGTH * 2];
+			Array.Copy(BitConverter.GetBytes(_clientsDirectionalInput.x), 0, data, FLOAT_LENGTH * 0, FLOAT_LENGTH);
+			Array.Copy(BitConverter.GetBytes(_clientsDirectionalInput.y), 0, data, FLOAT_LENGTH * 1, FLOAT_LENGTH);
+			SendData(data);
+			_clientsLastDirectionalInput = _clientsDirectionalInput;
+		}
+
+		private void SendTransformsToClient()
+		{	// update position of host, client and puck on client
+			byte[] data = new byte[FLOAT_LENGTH * 6];
+			if (_remotePlayer != null)
+			{
+				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.x), 0, data, FLOAT_LENGTH * 0, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.z), 0, data, FLOAT_LENGTH * 1, FLOAT_LENGTH);
+			}
+
+			{
+				Array.Copy(BitConverter.GetBytes(_localPlayer.position.x),  0, data, FLOAT_LENGTH * 2, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_localPlayer.position.z),  0, data, FLOAT_LENGTH * 3, FLOAT_LENGTH);
+			}
+
+			if (_currentPuck != null)
+			{
+				Array.Copy(BitConverter.GetBytes(_currentPuck.position.x),  0, data, FLOAT_LENGTH * 4, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_currentPuck.position.z),  0, data, FLOAT_LENGTH * 5, FLOAT_LENGTH);
+			}
+			SendData(data);
+		}
+
+		#endregion
 	}
 }

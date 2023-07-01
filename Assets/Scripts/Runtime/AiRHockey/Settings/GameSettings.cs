@@ -12,16 +12,13 @@ namespace HTW.AiRHockey.Settings
 
         public float PlayerSpeed = 20f;
 
-        public GameObject PlayerPrefab;
-        public Puck PuckPrefab;
-        public Vector3 InitialPositionPlayer1   = new();
-        public Vector3 InitialPositionPlayer2   = new();
+        public int TransformSendHertz = 60;
+
+        public GameObject   PlayerPrefab;
+        public Puck         PuckPrefab;
+
+        public Vector3 InitialPositionHost   = new();
+        public Vector3 InitialPositionClient   = new();
         public Vector3 InitialPuckPosition      = new();
-
-        // volume
-
-        // keybinds
-
-        // speed
     }
 }
