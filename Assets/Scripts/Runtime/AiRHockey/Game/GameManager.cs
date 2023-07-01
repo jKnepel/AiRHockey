@@ -32,6 +32,8 @@ namespace HTW.AiRHockey.Game
 			{
 				int minutes = Mathf.FloorToInt(GameTime / 60);
 				int seconds = Mathf.FloorToInt(GameTime % 60);
+				if (minutes >= 100)
+					return string.Format("99:99");
 				return string.Format("{0:00}:{1:00}", minutes, seconds);
 			}
 		}
@@ -78,10 +80,16 @@ namespace HTW.AiRHockey.Game
 				DisconnectFromServer();
 
 			if (_gameState != null)
+			{
 				_gameState.Dispose();
+				_gameState = null;
+			}
 
 			if (_playerTransform != null)
+			{
 				_playerTransform.Dispose();
+				_playerTransform = null;
+			}
 		}
 
 		private void OnDestroy()
@@ -225,13 +233,14 @@ namespace HTW.AiRHockey.Game
 					yield return null;
 
 				_gameState = new();
-				_gameState.OnGameStart += GameStarted;
-				_gameState.OnGameEnd += GameEnded;
-				_gameState.OnGameWon += GameWon;
-				_gameState.OnGoalScored += GoalScored;
-				_gameState.OnResetPlayers += PlayersReset;
-
 				_playerTransform = new(IsHost);
+
+				GameManagerEvents.OnGameStart += GameStarted;
+				GameManagerEvents.OnGameEnd += GameEnded;
+				GameManagerEvents.OnGameWon += GameWon;
+				GameManagerEvents.OnGoalScored += GoalScored;
+				GameManagerEvents.OnResetPlayers += PlayersReset;
+
 			}
 
 			StartCoroutine(LoadGameScene());
@@ -239,13 +248,14 @@ namespace HTW.AiRHockey.Game
 
 		private void Disconnected()
 		{	// dispose modules and unload scene
+			GameManagerEvents.OnGameStart -= GameStarted;
+			GameManagerEvents.OnGameEnd -= GameEnded;
+			GameManagerEvents.OnGameWon -= GameWon;
+			GameManagerEvents.OnGoalScored -= GoalScored;
+			GameManagerEvents.OnResetPlayers -= PlayersReset;
+			
 			if (_gameState != null)
 			{
-				_gameState.OnGameStart -= GameStarted;
-				_gameState.OnGameEnd -= GameEnded;
-				_gameState.OnGameWon -= GameWon;
-				_gameState.OnGoalScored -= GoalScored;
-				_gameState.OnResetPlayers -= PlayersReset;
 				_gameState.Dispose();
 				_gameState = null;
 			}
