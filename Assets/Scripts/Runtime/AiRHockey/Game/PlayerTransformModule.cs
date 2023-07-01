@@ -145,7 +145,7 @@ namespace HTW.AiRHockey.Game
 					Array.Copy(data, FLOAT_LENGTH * 3, positionZBytes, 0, FLOAT_LENGTH);
 					float positionZ = BitConverter.ToSingle(positionZBytes);
 
-					_localPlayer.MovePosition(new(positionX, _localPlayer.position.y, positionZ));
+					_remotePlayer.MovePosition(new(positionX, _remotePlayer.position.y, positionZ));
 				}
 
 				if (_currentPuck != null)
