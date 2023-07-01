@@ -93,9 +93,9 @@ namespace HTW.AiRHockey.Game
 			if (!_isHost)
 				return;
 			
-			_localPlayer.position = _gameSettings.InitialPositionHost;
+			_localPlayer.position = _isHost ? _gameSettings.InitialPositionHost : _gameSettings.InitialPositionClient;
 			if (_remotePlayer != null)
-				_remotePlayer.position = _gameSettings.InitialPositionClient;
+				_remotePlayer.position = _isHost ? _gameSettings.InitialPositionClient : _gameSettings.InitialPositionHost;
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
