@@ -224,7 +224,7 @@ namespace HTW.AiRHockey.Game
 		{   // load scene, gamestate module and player module
 			System.Collections.IEnumerator LoadGameScene()
 			{
-				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameSceneTest");
+				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameScene");
 				while (!_sceneLoadOperation.isDone)
 					yield return null;
 
