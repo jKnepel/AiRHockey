@@ -29,29 +29,11 @@ namespace HTW.AiRHockey.Game
 
         public void OnGoalScored(bool player)
         {
-            if(player)
-            {
-                UpdatePlayer2Score();
-            } else
-            {
-                UpdatePlayer1Score();
-            }
-        }
+            foreach (TextMeshPro textMesh in Player1Score)
+                textMesh.text = string.Format("{0:00}:{1:00}", InstanceFinder.GameManager.Player1Score, InstanceFinder.GameManager.Player2Score);
 
-        public void UpdatePlayer1Score()
-        {
-            foreach(TextMeshPro textMesh in Player1Score)
-            {
-                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
-            }
-        }
-
-        public void UpdatePlayer2Score()
-        {
             foreach (TextMeshPro textMesh in Player2Score)
-            {
-                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
-            }
+                textMesh.text = string.Format("{0:00}:{1:00}", InstanceFinder.GameManager.Player2Score, InstanceFinder.GameManager.Player1Score);
         }
 
         public void UpdateTimer()

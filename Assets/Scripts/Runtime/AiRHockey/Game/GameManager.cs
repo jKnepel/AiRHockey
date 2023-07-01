@@ -82,10 +82,16 @@ namespace HTW.AiRHockey.Game
 				DisconnectFromServer();
 
 			if (_gameState != null)
+			{
 				_gameState.Dispose();
+				_gameState = null;
+			}
 
 			if (_playerTransform != null)
+			{
 				_playerTransform.Dispose();
+				_playerTransform = null;
+			}
 		}
 
 		private void OnDestroy()
@@ -224,7 +230,7 @@ namespace HTW.AiRHockey.Game
 		{   // load scene, gamestate module and player module
 			System.Collections.IEnumerator LoadGameScene()
 			{
-				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameSceneTest");
+				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameScene");
 				while (!_sceneLoadOperation.isDone)
 					yield return null;
 
@@ -252,8 +258,8 @@ namespace HTW.AiRHockey.Game
 			
 			if (_gameState != null)
 			{
-				_gameState = null;
 				_gameState.Dispose();
+				_gameState = null;
 			}
 
 			if (_playerTransform != null)
