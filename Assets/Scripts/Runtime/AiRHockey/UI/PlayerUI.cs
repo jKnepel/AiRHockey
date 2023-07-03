@@ -10,9 +10,9 @@ namespace HTW.AiRHockey.Game
     {
 
         [SerializeField] private TMP_Text[] Timers;
-
         [SerializeField] private TMP_Text[] Player1Score;
         [SerializeField] private TMP_Text[] Player2Score;
+        [SerializeField] private Transform HandMenu;
 
         private float p1Rotation = 0f;
         private float p1TimerRotation = -90f;
@@ -93,12 +93,14 @@ namespace HTW.AiRHockey.Game
 
         public void DisplayOptions()
         {
-            Debug.Log("Display Options");
+            HandMenu.GetChild(0).gameObject.SetActive(false);
+            HandMenu.GetChild(1).gameObject.SetActive(true);
         }
 
         public void HideOptions()
         {
-            Debug.Log("Hide Options");
+            HandMenu.GetChild(0).gameObject.SetActive(true);
+            HandMenu.GetChild(1).gameObject.SetActive(false);
         }
 
         public void BackToMenu()
