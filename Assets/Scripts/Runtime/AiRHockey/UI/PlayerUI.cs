@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace HTW.AiRHockey.Game
 {
@@ -14,56 +13,9 @@ namespace HTW.AiRHockey.Game
         [SerializeField] private TMP_Text[] Player2Score;
         [SerializeField] private Transform HandMenu;
 
-        private float p1Rotation = 0f;
-        private float p1TimerRotation = -90f;
-        private float pRotation = 180;
-        private bool host = false;
-
         private void Start()
 		{
-            Timers[0].text = "12:99";
             GameManagerEvents.OnGoalScored += OnGoalScored;
-            //Set rotation according to player perspective, but only the ones on the table.
-            if(InstanceFinder.GameManager.IsHost)
-            {
-                foreach(TextMeshPro text in Player2Score)
-                {
-                    if(text.gameObject.tag.Equals("Table"))
-                    {
-                        Vector3 initRotation = text.transform.parent.rotation.eulerAngles;
-                        text.transform.parent.rotation = Quaternion.Euler(initRotation.x, p1Rotation, initRotation.z);
-                    }
-                }
-
-                foreach(TextMeshPro timer in Timers)
-                {
-                    if (timer.gameObject.tag.Equals("Table"))
-                    {
-                        Vector3 initRotation = timer.transform.rotation.eulerAngles;
-                        timer.transform.rotation = Quaternion.Euler(initRotation.x, initRotation.y, p1TimerRotation);
-                    }
-                }
-
-            } else
-            {
-                foreach (TextMeshPro text in Player1Score)
-                {
-                    if (text.gameObject.tag.Equals("Table"))
-                    {
-                        Vector3 initRotation = text.transform.parent.rotation.eulerAngles;
-                        text.transform.parent.rotation = Quaternion.Euler(initRotation.x, p1Rotation + pRotation, initRotation.z);
-                    }
-                }
-
-                foreach (TextMeshPro timer in Timers)
-                {
-                    if (timer.gameObject.tag.Equals("Table"))
-                    {
-                        Vector3 initRotation = timer.transform.rotation.eulerAngles;
-                        timer.transform.rotation = Quaternion.Euler(initRotation.x, p1TimerRotation + pRotation, initRotation.z);
-                    }
-                }
-            }
 		}
 
         private void Update()
@@ -76,16 +28,16 @@ namespace HTW.AiRHockey.Game
 
         public void OnGoalScored(bool player)
         {
-            foreach (TextMeshPro textMesh in Player1Score)
-                textMesh.text = string.Format("{0:00}:{1:00}", InstanceFinder.GameManager.Player1Score, InstanceFinder.GameManager.Player2Score);
+            foreach (TMP_Text textMesh in Player1Score)
+                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
 
-            foreach (TextMeshPro textMesh in Player2Score)
-                textMesh.text = string.Format("{0:00}:{1:00}", InstanceFinder.GameManager.Player2Score, InstanceFinder.GameManager.Player1Score);
+            foreach (TMP_Text textMesh in Player2Score)
+                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player2Score);
         }
 
         public void UpdateTimer()
         {
-            foreach(TextMeshPro textMesh in Timers)
+            foreach(TMP_Text textMesh in Timers)
             {
                 textMesh.text = InstanceFinder.GameManager.GameTimeText;
             }

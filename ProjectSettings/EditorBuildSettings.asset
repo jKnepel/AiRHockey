@@ -11,9 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/GameSceneTest.unity
-    guid: 053e1bf8c847dd44f8e9b3634363d894
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 62fd29f7fd72a604e97ac78af3a157d7, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d0e8b569879f2564b8b2d61d4483216f, type: 2}
