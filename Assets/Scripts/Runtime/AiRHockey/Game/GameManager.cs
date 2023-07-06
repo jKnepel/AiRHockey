@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using CENTIS.UnityModuledNet;
 using CENTIS.UnityModuledNet.Networking;
 using CENTIS.UnityModuledNet.Managing;
@@ -51,8 +50,6 @@ namespace HTW.AiRHockey.Game
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
 
-		private AsyncOperation _sceneLoadOperation;
-
 		#endregion
 
 		#region lifecycle
@@ -60,7 +57,6 @@ namespace HTW.AiRHockey.Game
 		private void OnEnable()
 		{
 			InstanceFinder.GameManager = this;
-			DontDestroyOnLoad(gameObject);
 			NetworkSettings.MaxNumberClients = 2;
 
 			ModuledNetManager.OnConnected += Connected;
@@ -225,24 +221,15 @@ namespace HTW.AiRHockey.Game
 		#region private methods
 
 		private void Connected()
-		{   // load scene, gamestate module and player module
-			System.Collections.IEnumerator LoadGameScene()
-			{
-				_sceneLoadOperation = SceneManager.LoadSceneAsync("GameScene");
-				while (!_sceneLoadOperation.isDone)
-					yield return null;
+		{   // load gamestate module and player module
+			_gameState = new();
+			_playerTransform = new(IsHost);
 
-				_gameState = new();
-				_playerTransform = new(IsHost);
-
-				GameManagerEvents.OnGameStart += GameStarted;
-				GameManagerEvents.OnGameEnd += GameEnded;
-				GameManagerEvents.OnGameWon += GameWon;
-				GameManagerEvents.OnGoalScored += GoalScored;
-				GameManagerEvents.OnResetPlayers += PlayersReset;
-			}
-
-			StartCoroutine(LoadGameScene());
+			GameManagerEvents.OnGameStart += GameStarted;
+			GameManagerEvents.OnGameEnd += GameEnded;
+			GameManagerEvents.OnGameWon += GameWon;
+			GameManagerEvents.OnGoalScored += GoalScored;
+			GameManagerEvents.OnResetPlayers += PlayersReset;
 		}
 
 		private void Disconnected()
@@ -264,8 +251,6 @@ namespace HTW.AiRHockey.Game
 				_playerTransform.Dispose();
 				_playerTransform = null;
 			}
-
-			SceneManager.LoadScene("MainScene");
 		}
 
 		private void GameStarted()
@@ -300,17 +285,9 @@ namespace HTW.AiRHockey.Game
 
 		private void ClientConnected(byte clientID)
 		{   // update new player on current state, create remote player
-			void loadClient(AsyncOperation sceneLoad)
-			{
-				_playerTransform.CreateRemotePlayer();
-				if (_gameState.IsReady)
-					_gameState.ReadyUp();
-			}
-
-			if (_sceneLoadOperation.isDone)
-				loadClient(_sceneLoadOperation);
-			else
-				_sceneLoadOperation.completed += loadClient;
+			_playerTransform.CreateRemotePlayer();
+			if (_gameState.IsReady)
+				_gameState.ReadyUp();
 		}
 
 		private void ClientDisconnected(byte clientID)

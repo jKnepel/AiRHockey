@@ -1,47 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using HTW.AiRHockey.Game;
 using UnityEngine;
 
-namespace HTW.AiRHockey.Game
+namespace HTW.AiRHockey.UI
 {
     public class PlayerUI : MonoBehaviour
     {
-
-        [SerializeField] private TMP_Text[] Timers;
-        [SerializeField] private TMP_Text[] Player1Score;
-        [SerializeField] private TMP_Text[] Player2Score;
         [SerializeField] private Transform HandMenu;
-
-        private void Start()
-		{
-            GameManagerEvents.OnGoalScored += OnGoalScored;
-		}
-
-        private void Update()
-        {
-            if (InstanceFinder.GameManager?.IsGameRunning ?? false)
-            {
-                UpdateTimer();
-            }
-        }
-
-        public void OnGoalScored(bool player)
-        {
-            foreach (TMP_Text textMesh in Player1Score)
-                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
-
-            foreach (TMP_Text textMesh in Player2Score)
-                textMesh.text = string.Format("{0:00}", InstanceFinder.GameManager.Player2Score);
-        }
-
-        public void UpdateTimer()
-        {
-            foreach(TMP_Text textMesh in Timers)
-            {
-                textMesh.text = InstanceFinder.GameManager.GameTimeText;
-            }
-        }
 
         public void DisplayOptions()
         {

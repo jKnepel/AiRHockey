@@ -4370,6 +4370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6532380585263763183}
+  - component: {fileID: 1294836704209230131}
   m_Layer: 0
   m_Name: ARTable
   m_TagString: Untagged
@@ -4398,6 +4399,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1294836704209230131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6532380585263763176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a6d6db83fdb404da53188d5df1f74b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timers:
+  - {fileID: 2685562367072719340}
+  - {fileID: 5029251781940767331}
+  _player1Score:
+  - {fileID: 8571530886322161443}
+  - {fileID: 7341300288183955111}
+  _player2Score:
+  - {fileID: 6377796057901897852}
+  - {fileID: 8603234810346785616}
 --- !u!1 &6532380585280721545
 GameObject:
   m_ObjectHideFlags: 0
