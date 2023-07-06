@@ -240,7 +240,6 @@ namespace HTW.AiRHockey.Game
 				GameManagerEvents.OnGameWon += GameWon;
 				GameManagerEvents.OnGoalScored += GoalScored;
 				GameManagerEvents.OnResetPlayers += PlayersReset;
-
 			}
 
 			StartCoroutine(LoadGameScene());

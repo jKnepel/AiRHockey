@@ -18,7 +18,10 @@ namespace HTW.AiRHockey.UI
 
         public void OnDecidingScoreChange(SliderEventData data)
         {
-            InstanceFinder.GameManager.GameSettings.DecidingScore = (int)(MAX_ROUNDS * data.NewValue);
+            if (InstanceFinder.GameManager)
+            {
+                InstanceFinder.GameManager.GameSettings.DecidingScore = (int)(MAX_ROUNDS * data.NewValue);
+            }
         }
 
         public void OnSubmit()

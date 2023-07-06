@@ -20,7 +20,7 @@ namespace HTW.AiRHockey.Game
 
         private void Update()
         {
-            if(InstanceFinder.GameManager.IsGameRunning)
+            if (InstanceFinder.GameManager?.IsGameRunning ?? false)
             {
                 UpdateTimer();
             }
