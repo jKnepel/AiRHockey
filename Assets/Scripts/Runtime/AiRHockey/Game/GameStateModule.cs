@@ -10,8 +10,10 @@ namespace HTW.AiRHockey.Game
 
 		public override string ModuleID => "GameStateModule";
 
-		public bool IsGameRunning { get; private set; }
+		// TODO : replace with enum/state machine
 		public bool IsWaitingForPlayers { get; private set; }
+		public bool IsGameStarted { get; private set; }
+		public bool IsGamePaused { get; private set; }
 
 		public bool IsReady { get; private set; }
 		public bool IsOtherPlayerReady { get; private set; }
@@ -35,7 +37,7 @@ namespace HTW.AiRHockey.Game
 		public override void Update()
 		{
 			base.Update();
-			if (IsGameRunning)
+			if (IsGameStarted)
 				GameTime += Time.deltaTime;
 		}
 
@@ -45,7 +47,7 @@ namespace HTW.AiRHockey.Game
 
 		public void ResetState()
 		{
-			IsGameRunning = false;
+			IsGameStarted = false;
 			IsWaitingForPlayers = true;
 			IsReady = false;
 			IsOtherPlayerReady = false;
@@ -72,7 +74,7 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.GameStart };
 			SendData(data);
-			IsGameRunning = true;
+			IsGameStarted = true;
 			IsWaitingForPlayers = false;
 			IsReady = false;
 			IsOtherPlayerReady = false;
@@ -82,16 +84,29 @@ namespace HTW.AiRHockey.Game
 			GameManagerEvents.OnGameStart?.Invoke();
 		}
 
-		public void GamePause()
+		public void PauseGame()
 		{
+			byte[] data = { (byte)GameStatePacketType.GamePause };
+			SendData(data);
+			IsGamePaused = true;
+			Time.timeScale = 0;
+			GameManagerEvents.OnGamePaused?.Invoke();
+		}
 
+		public void UnpauseGame()
+		{
+			byte[] data = { (byte)GameStatePacketType.GameResume };
+			SendData(data);
+			IsGamePaused = false;
+			Time.timeScale = 1;
+			GameManagerEvents.OnGameResumed?.Invoke();
 		}
 
 		public void EndGame()
 		{
 			byte[] data = { (byte)GameStatePacketType.GameEnd };
 			SendData(data);
-			IsGameRunning = false;
+			IsGameStarted = false;
 			IsWaitingForPlayers = true;
 			IsReady = false;
 			IsOtherPlayerReady = false;
@@ -105,7 +120,7 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.GameWon, (byte)(winningPlayer ? 1 : 0) };
 			SendData(data);
-			IsGameRunning = false;
+			IsGameStarted = false;
 			IsWaitingForPlayers = true;
 			GameManagerEvents.OnGameWon?.Invoke(winningPlayer);
 		}
@@ -137,22 +152,29 @@ namespace HTW.AiRHockey.Game
 					IsOtherPlayerReady = false;
 					break;
 				case GameStatePacketType.GameStart:
-					IsGameRunning = true;
+					IsGameStarted = true;
 					IsWaitingForPlayers = false;
 					IsReady = false;
 					IsOtherPlayerReady = false;
 					GameManagerEvents.OnGameStart?.Invoke();
 					break;
 				case GameStatePacketType.GamePause:
-
+					IsGamePaused = true;
+					Time.timeScale = 0;
+					GameManagerEvents.OnGamePaused?.Invoke();
+					break;
+				case GameStatePacketType.GameResume:
+					IsGamePaused = false;
+					Time.timeScale = 1;
+					GameManagerEvents.OnGameResumed?.Invoke();
 					break;
 				case GameStatePacketType.GameEnd:
-					IsGameRunning = false;
+					IsGameStarted = false;
 					IsWaitingForPlayers = true;
 					GameManagerEvents.OnGameEnd?.Invoke();
 					break;
 				case GameStatePacketType.GameWon:
-					IsGameRunning = false;
+					IsGameStarted = false;
 					IsWaitingForPlayers = true;
 					GameManagerEvents.OnGameWon?.Invoke(data[1] != 0);
 					break;
@@ -176,8 +198,9 @@ namespace HTW.AiRHockey.Game
 		Unready,
 		GameStart,
 		GamePause,
-		GameWon,
+		GameResume,
 		GameEnd,
+		GameWon,
 		Goal,
 		ResetPlayers,
 	}

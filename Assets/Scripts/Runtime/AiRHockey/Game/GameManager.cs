@@ -16,7 +16,7 @@ namespace HTW.AiRHockey.Game
 		public bool IsOnline => ModuledNetManager.IsConnected;
 		public bool IsHost => ModuledNetManager.IsHost;
 
-		public bool IsGameRunning => _gameState?.IsGameRunning ?? false;
+		public bool IsGameStarted => _gameState?.IsGameStarted ?? false;
 		public bool IsWaitingForPlayers => _gameState?.IsWaitingForPlayers ?? false;
 		public bool IsReady => _gameState?.IsReady ?? false;
 		public bool IsOtherPlayerReady => _gameState?.IsOtherPlayerReady ?? false;
@@ -138,7 +138,7 @@ namespace HTW.AiRHockey.Game
 		/// <param name="movementInput"></param>
 		public void UpdatePlayerTransform(Vector2 movementInput)
 		{
-			if (!IsGameRunning || _playerTransform == null)
+			if (!IsGameStarted || _playerTransform == null)
 				return;
 
 			_playerTransform.UpdatePlayerTransform(movementInput);
@@ -177,12 +177,20 @@ namespace HTW.AiRHockey.Game
 				_gameState.Unready();
 		}
 
+		public void PauseGame()
+		{
+			if (!IsOnline || !IsGameStarted)
+				return;
+
+			_gameState.PauseGame();
+		}
+
 		/// <summary>
 		/// End game early
 		/// </summary>
 		public void EndGame()
 		{
-			if (!IsOnline || !IsGameRunning)
+			if (!IsOnline || !IsGameStarted)
 				return;
 
 			_gameState.EndGame();
@@ -193,7 +201,7 @@ namespace HTW.AiRHockey.Game
 		/// </summary>
 		public void ResetPlayers()
 		{
-			if (!IsOnline || !IsGameRunning)
+			if (!IsOnline || !IsGameStarted)
 				return;
 
 			_gameState.ResetPlayers();
@@ -205,7 +213,7 @@ namespace HTW.AiRHockey.Game
 		/// <param name="scoringPlayer"></param>
 		public void ScoreGoal(bool scoringPlayer)
 		{
-			if (!IsOnline || !IsGameRunning)
+			if (!IsOnline || !IsGameStarted)
 				return;
 
 			_gameState.ScoreGoal(scoringPlayer);
