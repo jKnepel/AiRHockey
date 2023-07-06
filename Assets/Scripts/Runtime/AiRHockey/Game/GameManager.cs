@@ -16,8 +16,11 @@ namespace HTW.AiRHockey.Game
 		public bool IsOnline => ModuledNetManager.IsConnected;
 		public bool IsHost => ModuledNetManager.IsHost;
 
-		public bool IsGameStarted => _gameState?.IsGameStarted ?? false;
 		public bool IsWaitingForPlayers => _gameState?.IsWaitingForPlayers ?? false;
+		public bool IsGameStarted => _gameState?.IsGameStarted ?? false;
+		public bool IsGamePaused => _gameState?.IsGamePaused ?? false;
+
+
 		public bool IsReady => _gameState?.IsReady ?? false;
 		public bool IsOtherPlayerReady => _gameState?.IsOtherPlayerReady ?? false;
 
@@ -177,12 +180,26 @@ namespace HTW.AiRHockey.Game
 				_gameState.Unready();
 		}
 
+		/// <summary>
+		/// Pauses the currently running game
+		/// </summary>
 		public void PauseGame()
 		{
 			if (!IsOnline || !IsGameStarted)
 				return;
 
 			_gameState.PauseGame();
+		}
+
+		/// <summary>
+		/// Unpauses the currently paused game
+		/// </summary>
+		public void UnpauseGame()
+		{
+			if (!IsOnline || !IsGamePaused)
+				return;
+
+			_gameState.UnpauseGame();
 		}
 
 		/// <summary>
