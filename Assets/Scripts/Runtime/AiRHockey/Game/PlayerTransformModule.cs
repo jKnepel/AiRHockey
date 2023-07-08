@@ -184,9 +184,6 @@ namespace HTW.AiRHockey.Game
 
 		private void SendInputToHost()
 		{	// update clients directional input on host
-			if (_clientsLastDirectionalInput == _clientsDirectionalInput)
-				return;
-
 			byte[] data = new byte[FLOAT_LENGTH * 2];
 			Array.Copy(BitConverter.GetBytes(_clientsDirectionalInput.x), 0, data, FLOAT_LENGTH * 0, FLOAT_LENGTH);
 			Array.Copy(BitConverter.GetBytes(_clientsDirectionalInput.y), 0, data, FLOAT_LENGTH * 1, FLOAT_LENGTH);
