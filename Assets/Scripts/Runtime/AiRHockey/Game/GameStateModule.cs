@@ -29,9 +29,7 @@ namespace HTW.AiRHockey.Game
 
 		public GameStateModule()
 		{
-			IsWaitingForPlayers = true;
-			Player1Score = 0;
-			Player2Score = 0;
+			ResetState();
 		}
 
 		public override void Update()
@@ -47,8 +45,10 @@ namespace HTW.AiRHockey.Game
 
 		public void ResetState()
 		{
-			IsGameStarted = false;
 			IsWaitingForPlayers = true;
+			IsGameStarted = false;
+			IsGamePaused = false;
+			Time.timeScale = 1;
 			IsReady = false;
 			IsOtherPlayerReady = false;
 			Player1Score = 0;
@@ -74,13 +74,8 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.GameStart };
 			SendData(data);
+			ResetState();
 			IsGameStarted = true;
-			IsWaitingForPlayers = false;
-			IsReady = false;
-			IsOtherPlayerReady = false;
-			Player1Score = 0;
-			Player2Score = 0;
-			GameTime = 0;
 			GameManagerEvents.OnGameStart?.Invoke();
 		}
 
@@ -106,13 +101,7 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.GameEnd };
 			SendData(data);
-			IsGameStarted = false;
-			IsWaitingForPlayers = true;
-			IsReady = false;
-			IsOtherPlayerReady = false;
-			Player1Score = 0;
-			Player2Score = 0;
-			GameTime = 0;
+			ResetState();
 			GameManagerEvents.OnGameEnd?.Invoke();
 		}
 
@@ -120,8 +109,7 @@ namespace HTW.AiRHockey.Game
 		{
 			byte[] data = { (byte)GameStatePacketType.GameWon, (byte)(winningPlayer ? 1 : 0) };
 			SendData(data);
-			IsGameStarted = false;
-			IsWaitingForPlayers = true;
+			ResetState();
 			GameManagerEvents.OnGameWon?.Invoke(winningPlayer);
 		}
 
@@ -169,13 +157,11 @@ namespace HTW.AiRHockey.Game
 					GameManagerEvents.OnGameResumed?.Invoke();
 					break;
 				case GameStatePacketType.GameEnd:
-					IsGameStarted = false;
-					IsWaitingForPlayers = true;
+					ResetState();
 					GameManagerEvents.OnGameEnd?.Invoke();
 					break;
 				case GameStatePacketType.GameWon:
-					IsGameStarted = false;
-					IsWaitingForPlayers = true;
+					ResetState();
 					GameManagerEvents.OnGameWon?.Invoke(data[1] != 0);
 					break;
 				case GameStatePacketType.Goal:
@@ -202,6 +188,6 @@ namespace HTW.AiRHockey.Game
 		GameEnd,
 		GameWon,
 		Goal,
-		ResetPlayers,
+		ResetPlayers
 	}
 }
