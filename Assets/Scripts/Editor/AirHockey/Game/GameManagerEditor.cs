@@ -53,7 +53,7 @@ namespace HTW.AiRHockey.Game
 
 			EditorGUILayout.Toggle("Is Online:", _manager.IsOnline);
 			EditorGUILayout.Toggle("Is Host:", _manager.IsHost);
-			EditorGUILayout.Toggle("Is Game Running:", _manager.IsGameRunning);
+			EditorGUILayout.Toggle("Is Game Running:", _manager.IsGameStarted);
 			EditorGUILayout.Toggle("Is Waiting For Players:", _manager.IsWaitingForPlayers);
 			EditorGUILayout.Toggle("Is Ready:", _manager.IsReady);
 			EditorGUILayout.Toggle("Is Other Player Ready:", _manager.IsOtherPlayerReady);
@@ -90,7 +90,7 @@ namespace HTW.AiRHockey.Game
 				}
 				EditorGUILayout.EndScrollView();
 			}
-			else if (!_manager.IsGameRunning)
+			else if (!_manager.IsGameStarted)
 			{
 				if (_manager.IsReady)
 				{
@@ -125,6 +125,17 @@ namespace HTW.AiRHockey.Game
 				EditorGUILayout.EndHorizontal();
 
 				EditorGUILayout.Space();
+
+				if (_manager.IsGamePaused)
+				{
+					if (GUILayout.Button("Unpause Game"))
+						_manager.UnpauseGame();
+				}
+				else
+				{
+					if (GUILayout.Button("Pause Game"))
+						_manager.PauseGame();
+				}
 
 				if (GUILayout.Button("Reset Players"))
 					_manager.ResetPlayers();
