@@ -40,7 +40,7 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.8.0",
     "com.unity.xr.openxr": "1.7.0",
-    "de.htw-berlin.centis.unity-moduled-net": "https://github.com/CENTIS-HTW/UnityModuledNet.git#0.2.2",
+    "de.htw-berlin.centis.unity-moduled-net": "https://github.com/CENTIS-HTW/UnityModuledNet.git#upm",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
