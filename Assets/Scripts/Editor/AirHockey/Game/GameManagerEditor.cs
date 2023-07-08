@@ -126,6 +126,17 @@ namespace HTW.AiRHockey.Game
 
 				EditorGUILayout.Space();
 
+				if (_manager.IsGamePaused)
+				{
+					if (GUILayout.Button("Unpause Game"))
+						_manager.UnpauseGame();
+				}
+				else
+				{
+					if (GUILayout.Button("Pause Game"))
+						_manager.PauseGame();
+				}
+
 				if (GUILayout.Button("Reset Players"))
 					_manager.ResetPlayers();
 
