@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,7 +202,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2351505567455720332, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2351505567455720332, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -385,7 +385,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &321093062 stripped
 GameObject:
@@ -1197,7 +1197,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &426401098 stripped
 RectTransform:
@@ -1764,6 +1764,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a788a27a01fdcc54cbe8ade5005fd5d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _current: {fileID: 1179080843}
+  _handMenu: {fileID: 1153769834}
+  _mainMenu: {fileID: 1324304197}
 --- !u!4 &737210276
 Transform:
   m_ObjectHideFlags: 0
@@ -1777,7 +1780,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &748446834 stripped
 RectTransform:
@@ -1813,7 +1816,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &760908075
 PrefabInstance:
@@ -2427,37 +2430,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa639845f2fb7af44b5995b40340fa16, type: 3}
---- !u!1 &895714460
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 895714461}
-  m_Layer: 0
-  m_Name: PlayerScreenUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &895714461
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895714460}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &912422789 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6908260419330600090, guid: fa639845f2fb7af44b5995b40340fa16, type: 3}
@@ -2570,7 +2542,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1014937108
 PrefabInstance:
@@ -2860,7 +2832,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3493013819197874656, guid: ad5b753b73e311143a85055b15cea562, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3493013819197874656, guid: ad5b753b73e311143a85055b15cea562, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2930,6 +2902,18 @@ PrefabInstance:
     - target: {fileID: 2740851784150135993, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139389454071641183, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139389454071641183, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139389454071641183, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.002
       objectReference: {fileID: 0}
     - target: {fileID: 3497020474055105118, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3030,6 +3014,14 @@ PrefabInstance:
     - target: {fileID: 6370812542152560067, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1153769834}
+    - target: {fileID: 6370812542152560067, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BackToMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 6370812542152560067, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HTW.AiRHockey.UI.PlayerUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6370812542152560068, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3050,6 +3042,14 @@ PrefabInstance:
     - target: {fileID: 6640560833159401159, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1153769834}
+    - target: {fileID: 6640560833159401159, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideOptions
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640560833159401159, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HTW.AiRHockey.UI.PlayerUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6640560833159401183, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_IsActive
@@ -3074,6 +3074,14 @@ PrefabInstance:
     - target: {fileID: 6719317340183145477, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1153769834}
+    - target: {fileID: 6719317340183145477, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DisplayOptions
+      objectReference: {fileID: 0}
+    - target: {fileID: 6719317340183145477, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HTW.AiRHockey.UI.PlayerUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7226910040868772253, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3118,6 +3126,14 @@ PrefabInstance:
     - target: {fileID: 7407839021016499277, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1153769834}
+    - target: {fileID: 7407839021016499277, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Rematch
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407839021016499277, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HTW.AiRHockey.UI.PlayerUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7407839021016499278, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_Enabled
@@ -3130,6 +3146,10 @@ PrefabInstance:
     - target: {fileID: 8251172806735141447, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_Name
       value: PlayerHandMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8251172806735141447, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8251172806735141560, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_RootOrder
@@ -3178,6 +3198,14 @@ PrefabInstance:
     - target: {fileID: 8382134520351074400, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 1153769834}
+    - target: {fileID: 8382134520351074400, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8382134520351074400, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
+      propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HTW.AiRHockey.UI.PlayerUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8382134520351074407, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3225,11 +3253,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
---- !u!224 &1153769832 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3139389454071641183, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
-  m_PrefabInstance: {fileID: 1153769831}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1153769833 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8251172806735141447, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
@@ -3247,7 +3270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd2846988ed392428c524ec95843efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HandMenu: {fileID: 1153769832}
 --- !u!1001 &1155786486
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3301,7 +3323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6532380585263763183, guid: 1012e9839b3ef9c44b9b3395a3183ff1, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6532380585263763183, guid: 1012e9839b3ef9c44b9b3395a3183ff1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3463,7 +3485,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1158438776
 MonoBehaviour:
@@ -4239,7 +4261,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1408558670
 PrefabInstance:
@@ -4621,7 +4643,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1424560905 stripped
 RectTransform:
@@ -4785,7 +4807,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1658595973
 GameObject:
@@ -4834,7 +4856,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1733829100 stripped
 RectTransform:
@@ -5632,7 +5654,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
 --- !u!1 &1997278281
 GameObject:

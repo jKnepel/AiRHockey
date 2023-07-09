@@ -7,7 +7,12 @@ namespace HTW.AiRHockey.UI
 {
     public class PlayerUI : MonoBehaviour
     {
-        [SerializeField] private Transform HandMenu;
+        private Transform HandMenu;
+
+        private void Start()
+        {
+            HandMenu = transform.GetChild(0);
+        }
 
         public void DisplayOptions()
         {
