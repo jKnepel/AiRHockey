@@ -1,15 +1,32 @@
+using CENTIS.UnityModuledNet.Managing;
+using HTW.AiRHockey.Game;
 using UnityEngine;
 
 namespace HTW.AiRHockey.UI
 {
     public class UIManager : MonoBehaviour
     {
+        [SerializeField] 
         private GameObject _current;
+        [SerializeField]
+        private PlayerUI _handMenu;
+        [SerializeField]
+        private GameObject _mainMenu;
+
         private GameObject _previous;
 
-        private void Start()
+        private void OnEnable()
         {
-            _current = GameObject.FindObjectOfType<Canvas>().gameObject;
+            ModuledNetManager.OnConnected += MenuOnConnect;
+            ModuledNetManager.OnDisconnected += MenuOnDisconnect;
+
+        }
+
+        private void OnDisable()
+        {
+            ModuledNetManager.OnConnected -= MenuOnConnect;
+            ModuledNetManager.OnDisconnected -= MenuOnDisconnect;
+
         }
 
         public void TransitionTo(GameObject to)
@@ -32,6 +49,24 @@ namespace HTW.AiRHockey.UI
 #else
          	Application.Quit();
 #endif
+        }
+
+        private void MenuOnConnect()
+        {
+            _handMenu.gameObject.SetActive(true);
+            _mainMenu.SetActive(false);
+        }
+
+        private void MenuOnDisconnect()
+        {
+            _handMenu.gameObject.SetActive(false);
+
+            _current.SetActive(false);
+
+            _current = _mainMenu.transform.GetChild(0).gameObject;
+            _current.SetActive(true);
+
+            _mainMenu.SetActive(true);
         }
     }
 }
