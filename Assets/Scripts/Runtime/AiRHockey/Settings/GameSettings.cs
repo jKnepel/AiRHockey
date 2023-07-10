@@ -14,6 +14,8 @@ namespace HTW.AiRHockey.Settings
 
         public int TransformSendHertz = 60;
 
+        public float ArenaSizeMultiplier = 5;
+
         public GameObject   PlayerPrefab;
         public Puck         PuckPrefab;
 

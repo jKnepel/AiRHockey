@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HTW.AiRHockey.QR;
+using HTW.AiRHockey.Settings;
 
 namespace HTW.AiRHockey.Game
 {
@@ -44,5 +45,7 @@ namespace HTW.AiRHockey.Game
                 _qrManager = value;
             }
 		}
+
+        public static GameSettings GameSettings => _gameManager.GameSettings;
     }
 }

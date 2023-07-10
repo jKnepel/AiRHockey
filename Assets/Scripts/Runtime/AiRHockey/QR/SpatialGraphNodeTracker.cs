@@ -1,13 +1,14 @@
 ﻿using Microsoft.MixedReality.OpenXR;
 using UnityEngine;
+using HTW.AiRHockey.Game;
 
 namespace HTW.AiRHockey.QR
 {
     public class SpatialGraphNodeTracker : MonoBehaviour
     {
-        [SerializeField] private float _sizeMultiplier;
+		#region attributes
 
-        private SpatialGraphNode node;
+		private SpatialGraphNode node;
 
         private System.Guid _id;
         public System.Guid Id
@@ -30,7 +31,11 @@ namespace HTW.AiRHockey.QR
             set => _physicalSideLength = value;
 		}
 
-        private void Start()
+		#endregion
+
+		#region lifecycle
+
+		private void Start()
         {
             InitializeSpatialGraphNode();
         }
@@ -50,7 +55,7 @@ namespace HTW.AiRHockey.QR
                     if (Camera.main.transform.parent != null)
                         pose = pose.GetTransformedBy(Camera.main.transform.parent);
 
-                    transform.localScale = _sizeMultiplier * PhysicalSideLength * Vector3.one;
+                    transform.localScale = InstanceFinder.GameSettings.ArenaSizeMultiplier * PhysicalSideLength * Vector3.one;
                     pose.rotation *= Quaternion.Euler(90, 0, 0);
                     float deltaCenter = PhysicalSideLength * 0.5f;
                     pose.position += pose.rotation * (deltaCenter * Vector3.right) - pose.rotation * (deltaCenter * Vector3.forward);
@@ -64,7 +69,11 @@ namespace HTW.AiRHockey.QR
             }
         }
 
-        private void InitializeSpatialGraphNode()
+		#endregion
+
+		#region private methods
+
+		private void InitializeSpatialGraphNode()
         {
             if (node == null || node.Id != Id)
             {
@@ -72,5 +81,7 @@ namespace HTW.AiRHockey.QR
                 Debug.Log($"Initialize SpatialGraphNode Id={Id}");
             }
         }
-    }
+
+		#endregion
+	}
 }
