@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using CENTIS.UnityModuledNet.Modules;
-using HTW.AiRHockey.Settings;
 
 namespace HTW.AiRHockey.Game
 {
@@ -44,6 +43,7 @@ namespace HTW.AiRHockey.Game
 			Vector3 position = _isHost ? InstanceFinder.GameSettings.InitialPositionHost : InstanceFinder.GameSettings.InitialPositionClient;
 			_localPlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
 			_localPlayer.gameObject.name = "LocalPlayer";
+			_localPlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.HostMaterial : InstanceFinder.GameSettings.ClientMaterial;
 		}
 
 		public override void Update()
@@ -69,6 +69,7 @@ namespace HTW.AiRHockey.Game
 			Vector3 position = _isHost ? InstanceFinder.GameSettings.InitialPositionClient : InstanceFinder.GameSettings.InitialPositionHost;
 			_remotePlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
 			_remotePlayer.gameObject.name = "RemotePlayer";
+			_remotePlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.ClientMaterial : InstanceFinder.GameSettings.HostMaterial;
 		}
 
 		public void DestroyRemotePlayer()

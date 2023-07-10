@@ -19,6 +19,9 @@ namespace HTW.AiRHockey.Settings
         public GameObject   PlayerPrefab;
         public Puck         PuckPrefab;
 
+        public Material     HostMaterial;
+        public Material     ClientMaterial;
+
         public Vector3 InitialPositionHost   = new();
         public Vector3 InitialPositionClient   = new();
         public Vector3 InitialPuckPosition      = new();
