@@ -21,9 +21,5 @@ namespace HTW.AiRHockey.Settings
 
         public Material     HostMaterial;
         public Material     ClientMaterial;
-
-        public Vector3 InitialPositionHost   = new();
-        public Vector3 InitialPositionClient   = new();
-        public Vector3 InitialPuckPosition      = new();
     }
 }

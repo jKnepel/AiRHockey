@@ -15,17 +15,20 @@ namespace HTW.AiRHockey.Game
 		#region fields
 
 		private readonly bool _isHost;
+		private readonly Transform _spawnParent;
+		private readonly Transform _hostSpawn;
+		private readonly Transform _clientSpawn;
+		private readonly Transform _puckSpawn;
 
 		private readonly int _layerMask;
 
-		private Rigidbody	_currentPuck;
 		private Rigidbody	_localPlayer;
 		private Rigidbody	_remotePlayer;
+		private Rigidbody	_currentPuck;
 
 		private float _time = 0;
-		
-		private Vector2 _clientsDirectionalInput		= new();
-		private Vector2 _clientsLastDirectionalInput	= new();
+
+		private Vector2 _clientsDirectionalInput = new();
 
 		private const int FLOAT_LENGTH	= 4;
 
@@ -33,17 +36,21 @@ namespace HTW.AiRHockey.Game
 
 		#region lifecycle
 
-		public PlayerTransformModule(bool isHost)
+		public PlayerTransformModule(bool isHost, Transform spawnParent, Transform hostSpawn, Transform clientSpawn, Transform puckSpawn)
 		{
 			_isHost = isHost;
+			_spawnParent = spawnParent;
+			_hostSpawn = hostSpawn;
+			_clientSpawn = clientSpawn;
+			_puckSpawn = puckSpawn;
 			_layerMask = (1 << LayerMask.NameToLayer("Barrier")) 
 				| (1 << LayerMask.NameToLayer("Player Barrier")) 
 				| (1 << LayerMask.NameToLayer("Puck"));
 
-			Vector3 position = _isHost ? InstanceFinder.GameSettings.InitialPositionHost : InstanceFinder.GameSettings.InitialPositionClient;
-			_localPlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
-			_localPlayer.gameObject.name = "LocalPlayer";
+			Vector3 position = _isHost ? _hostSpawn.position : _clientSpawn.position;
+			_localPlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
 			_localPlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.HostMaterial : InstanceFinder.GameSettings.ClientMaterial;
+			_localPlayer.gameObject.name = "LocalPlayer";
 		}
 
 		public override void Update()
@@ -66,10 +73,10 @@ namespace HTW.AiRHockey.Game
 
 		public void CreateRemotePlayer()
 		{
-			Vector3 position = _isHost ? InstanceFinder.GameSettings.InitialPositionClient : InstanceFinder.GameSettings.InitialPositionHost;
-			_remotePlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity).GetComponent<Rigidbody>();
-			_remotePlayer.gameObject.name = "RemotePlayer";
+			Vector3 position = _isHost ? _clientSpawn.position : _hostSpawn.position;
+			_remotePlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
 			_remotePlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.ClientMaterial : InstanceFinder.GameSettings.HostMaterial;
+			_remotePlayer.gameObject.name = "RemotePlayer";
 		}
 
 		public void DestroyRemotePlayer()
@@ -85,16 +92,16 @@ namespace HTW.AiRHockey.Game
 
 			if (reinstantiatePuck)
 			{
-				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, InstanceFinder.GameSettings.InitialPuckPosition, Quaternion.identity).GetComponent<Rigidbody>();
+				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, _puckSpawn.position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
 				if (!_isHost) _currentPuck.isKinematic = true;
 			}
 			
 			if (!_isHost)
 				return;
 			
-			_localPlayer.position = _isHost ? InstanceFinder.GameSettings.InitialPositionHost : InstanceFinder.GameSettings.InitialPositionClient;
+			_localPlayer.position = _isHost ? _hostSpawn.position : _clientSpawn.position;
 			if (_remotePlayer != null)
-				_remotePlayer.position = _isHost ? InstanceFinder.GameSettings.InitialPositionClient : InstanceFinder.GameSettings.InitialPositionHost;
+				_remotePlayer.position = _isHost ? _clientSpawn.position : _hostSpawn.position;
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
@@ -183,14 +190,10 @@ namespace HTW.AiRHockey.Game
 
 		private void SendInputToHost()
 		{	// update clients directional input on host
-			if (_clientsLastDirectionalInput == _clientsDirectionalInput)
-				return;
-
 			byte[] data = new byte[FLOAT_LENGTH * 2];
 			Array.Copy(BitConverter.GetBytes(_clientsDirectionalInput.x), 0, data, FLOAT_LENGTH * 0, FLOAT_LENGTH);
 			Array.Copy(BitConverter.GetBytes(_clientsDirectionalInput.y), 0, data, FLOAT_LENGTH * 1, FLOAT_LENGTH);
 			SendData(data);
-			_clientsLastDirectionalInput = _clientsDirectionalInput;
 		}
 
 		private void SendTransformsToClient()
