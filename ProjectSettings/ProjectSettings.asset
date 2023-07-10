@@ -135,7 +135,11 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.1
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 62fd29f7fd72a604e97ac78af3a157d7, type: 2}
+  - {fileID: 11400000, guid: c677e5c4eb85b7849a8da406775c299d, type: 2}
+  - {fileID: -6750824263362237500, guid: d0e8b569879f2564b8b2d61d4483216f, type: 2}
+  - {fileID: 4148601271671738832, guid: 794fa0c6e66d67a47b9918b2bdf7e031, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -759,7 +763,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 00f272d5accdda01
+  metroCertificateNotAfter: 006425f578d1da01
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: A(i)RHockey

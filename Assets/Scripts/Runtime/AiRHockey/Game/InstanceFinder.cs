@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HTW.AiRHockey.QR;
 
 namespace HTW.AiRHockey.Game
 {
@@ -23,6 +24,25 @@ namespace HTW.AiRHockey.Game
                 
                 _gameManager = value;
 			}
+		}
+
+        private static QRCodesManager _qrManager;
+        public static QRCodesManager QRCodesManager
+		{
+            get => _qrManager;
+            set
+			{
+                if (_qrManager != null)
+                {
+#if UNITY_EDITOR
+                    GameObject.DestroyImmediate(_qrManager.gameObject);
+#else
+                    GameObject.Destroy(_qrManager.gameObject);
+#endif
+                }
+
+                _qrManager = value;
+            }
 		}
     }
 }
