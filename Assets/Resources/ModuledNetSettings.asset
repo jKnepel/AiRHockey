@@ -16,6 +16,7 @@ MonoBehaviour:
   Color:
     serializedVersion: 2
     rgba: 4294967295
+  ReconnectAfterRecompile: 0
   ServerConnectionTimeout: 5000
   ServerHeartbeatDelay: 1000
   ServerDiscoveryTimeout: 3000

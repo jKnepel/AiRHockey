@@ -14,11 +14,12 @@ namespace HTW.AiRHockey.Settings
 
         public int TransformSendHertz = 60;
 
+        public float ArenaSizeMultiplier = 5;
+
         public GameObject   PlayerPrefab;
         public Puck         PuckPrefab;
 
-        public Vector3 InitialPositionHost   = new();
-        public Vector3 InitialPositionClient   = new();
-        public Vector3 InitialPuckPosition      = new();
+        public Material     HostMaterial;
+        public Material     ClientMaterial;
     }
 }
