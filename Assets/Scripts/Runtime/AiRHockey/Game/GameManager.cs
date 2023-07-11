@@ -145,7 +145,7 @@ namespace HTW.AiRHockey.Game
 		/// <param name="movementInput"></param>
 		public void UpdatePlayerTransform(Vector2 movementInput)
 		{
-			if (_playerTransform == null)
+			if (!IsGameStarted || _playerTransform == null)
 				return;
 
 			_playerTransform.UpdatePlayerTransform(movementInput);
