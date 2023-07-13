@@ -1,5 +1,4 @@
 using CENTIS.UnityModuledNet.Managing;
-using HTW.AiRHockey.Game;
 using UnityEngine;
 
 namespace HTW.AiRHockey.UI
@@ -19,14 +18,12 @@ namespace HTW.AiRHockey.UI
         {
             ModuledNetManager.OnConnected += MenuOnConnect;
             ModuledNetManager.OnDisconnected += MenuOnDisconnect;
-
         }
 
         private void OnDisable()
         {
             ModuledNetManager.OnConnected -= MenuOnConnect;
             ModuledNetManager.OnDisconnected -= MenuOnDisconnect;
-
         }
 
         public void TransitionTo(GameObject to)
@@ -60,12 +57,9 @@ namespace HTW.AiRHockey.UI
         private void MenuOnDisconnect()
         {
             _handMenu.gameObject.SetActive(false);
-
             _current.SetActive(false);
-
             _current = _mainMenu.transform.GetChild(0).gameObject;
             _current.SetActive(true);
-
             _mainMenu.SetActive(true);
         }
     }
