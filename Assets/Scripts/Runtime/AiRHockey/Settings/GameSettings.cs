@@ -18,7 +18,7 @@ namespace HTW.AiRHockey.Settings
 
         public bool IsRightHanded = true;
 
-        public GameObject   PlayerPrefab;
+        public Player       PlayerPrefab;
         public Puck         PuckPrefab;
 
         public Material     HostMaterial;

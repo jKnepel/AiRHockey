@@ -112,7 +112,9 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: -1813146318149588949, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+  _player: {fileID: 7825244514590518882}
   _interactable: {fileID: 417153581}
+  _outline: {fileID: -6087646036783201789}
 --- !u!114 &417153581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,3 +338,14 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7825244514590518882 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 969826157949886574, guid: a362c3f5beaf7d242947728b8373b690, type: 3}
+  m_PrefabInstance: {fileID: 7056394792917388812}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5611099256670643437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2aeead375448f348a572fdb96bd951d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

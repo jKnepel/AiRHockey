@@ -7,18 +7,22 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace HTW.AiRHockey.Game
 {
-    [RequireComponent(typeof(StatefulInteractable))]
+    [RequireComponent(typeof(Player), typeof(StatefulInteractable), typeof(MeshOutline))]
     public class ARPlayerController : MonoBehaviour
     {
-        [SerializeField] private InputActionProperty _leftControllerPosition;
-        [SerializeField] private InputActionProperty _rightControllerPosition;
-        [SerializeField] private StatefulInteractable _interactable;
+        [SerializeField] private InputActionProperty    _leftControllerPosition;
+        [SerializeField] private InputActionProperty    _rightControllerPosition;
+
+        [SerializeField] private Player                 _player;
+        [SerializeField] private StatefulInteractable   _interactable;
+        [SerializeField] private MeshOutline            _outline;
 
         private Vector3 _lastPosition;
-        private MeshOutline _outline;
 
         private void Awake()
         {
+            if (_player == null)
+                _player = GetComponent<Player>();
             if (_interactable == null)
                 _interactable = GetComponent<StatefulInteractable>();
             if (_outline == null)
@@ -40,7 +44,7 @@ namespace HTW.AiRHockey.Game
         private void Update()
         {
             InputActionProperty positionalProperty = InstanceFinder.GameSettings.IsRightHanded ? _rightControllerPosition : _leftControllerPosition;
-            if (InstanceFinder.GameManager.IsGameStarted && _interactable.IsToggled && positionalProperty.action != null)
+            if (_player.IsLocalPlayer && InstanceFinder.GameManager.IsGameStarted && _interactable.IsToggled && positionalProperty.action != null)
             {
                 Vector3 position = positionalProperty.action.ReadValue<Vector3>();
                 if (position.Equals(Vector3.zero))
