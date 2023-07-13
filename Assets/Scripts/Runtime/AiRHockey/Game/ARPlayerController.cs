@@ -1,7 +1,9 @@
 using System;
+using Microsoft.MixedReality.GraphicsTools;
 using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace HTW.AiRHockey.Game
 {
@@ -13,11 +15,26 @@ namespace HTW.AiRHockey.Game
         [SerializeField] private StatefulInteractable _interactable;
 
         private Vector3 _lastPosition;
+        private MeshOutline _outline;
 
-        private void Start()
+        private void Awake()
         {
             if (_interactable == null)
                 _interactable = GetComponent<StatefulInteractable>();
+            if (_outline == null)
+                _outline = GetComponent<MeshOutline>();
+        }
+
+        private void OnEnable()
+        {
+            _interactable.hoverEntered.AddListener(ActivateOutline);
+            _interactable.hoverExited.AddListener(DeactivateOutline);
+        }
+
+        private void OnDisable()
+        {
+            _interactable.hoverEntered.RemoveListener(ActivateOutline);
+            _interactable.hoverExited.RemoveListener(DeactivateOutline);
         }
 
         private void Update()
@@ -42,6 +59,9 @@ namespace HTW.AiRHockey.Game
         public void IsSelected(Single single)
         {
             InstanceFinder.GameManager.ReadyUp();
+            DeactivateOutline(null);
+            _interactable.hoverEntered.RemoveListener(ActivateOutline);
+            _interactable.hoverExited.RemoveListener(DeactivateOutline);
             Debug.Log("Is Selected:" + single);
 
         }
@@ -53,7 +73,20 @@ namespace HTW.AiRHockey.Game
         public void IsDeselected(Single single)
         {
             InstanceFinder.GameManager.Unready();
+            _interactable.hoverEntered.AddListener(ActivateOutline);
+            _interactable.hoverExited.AddListener(DeactivateOutline);
             Debug.Log("Is Deselected: " + single);
+
         }
+
+        private void ActivateOutline(HoverEnterEventArgs args) {
+            _outline.enabled = true;
+        }
+
+        private void DeactivateOutline(HoverExitEventArgs args)
+        {
+            _outline.enabled = false;
+        }
+
     }
 }

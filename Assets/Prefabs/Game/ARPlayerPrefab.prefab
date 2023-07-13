@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3185162753523198689, guid: a362c3f5beaf7d242947728b8373b690, type: 3}
       propertyPath: m_Name
-      value: ARPlayerPrefab Variant
+      value: ARPlayerPrefab
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a362c3f5beaf7d242947728b8373b690, type: 3}
@@ -62,6 +62,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3185162753523198689, guid: a362c3f5beaf7d242947728b8373b690, type: 3}
   m_PrefabInstance: {fileID: 7056394792917388812}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6087646036783201789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5611099256670643437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90adb44e17279dc4db8f0fc595f1f52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: a721d00e26938d84e84fdb745fd9a77f, type: 2}
+  outlineWidth: 0.01
 --- !u!114 &417153580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,18 +312,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 417153582}
-          m_TargetAssemblyTypeName: HTW.AiRHockey.Outline.OutlineObject, Assembly-CSharp
-          m_MethodName: DisableOutlines
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
     onExited:
       m_PersistentCalls:
         m_Calls:
@@ -317,18 +319,6 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: HTW.AiRHockey.Game.ARPlayerController, Assembly-CSharp
           m_MethodName: IsDeselected
           m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 417153582}
-          m_TargetAssemblyTypeName: HTW.AiRHockey.Outline.OutlineObject, Assembly-CSharp
-          m_MethodName: DisableOutlines
-          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -346,30 +336,3 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &417153582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5611099256670643437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78beeccf4d0ed2f48ac470b3e2b27bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disabled: 0
---- !u!114 &417153583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5611099256670643437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd72bacb83d48046a59473bf8cbba88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  storeInTexcoordChannel: 1
-  cospatialVertexDistance: 0.01
