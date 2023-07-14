@@ -7,7 +7,7 @@ namespace HTW.AiRHockey.UI
 {
     public class CreateGameMenu : MonoBehaviour
     {
-        private const int MAX_ROUNDS = 20;
+        private const int MAX_ROUNDS = 19;
 
         private string _lobbyName;
 
@@ -20,7 +20,7 @@ namespace HTW.AiRHockey.UI
         {
             if (InstanceFinder.GameManager)
             {
-                InstanceFinder.GameManager.GameSettings.DecidingScore = (int)(MAX_ROUNDS * data.NewValue);
+                InstanceFinder.GameManager.GameSettings.DecidingScore = 1 + (int)(MAX_ROUNDS * data.NewValue);
             }
         }
 
