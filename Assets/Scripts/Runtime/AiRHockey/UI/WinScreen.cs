@@ -6,9 +6,10 @@ namespace HTW.AiRHockey.UI
 {
     public class WinScreen : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             GameManagerEvents.OnGameWon += GameWon;
+            gameObject.SetActive(false);
         }
 
         private void OnDestroy()

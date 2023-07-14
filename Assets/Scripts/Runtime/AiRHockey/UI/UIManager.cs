@@ -6,8 +6,9 @@ namespace HTW.AiRHockey.UI
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private GameObject _current;
-        [SerializeField] private GameObject _handMenu;
         [SerializeField] private GameObject _mainMenu;
+        [SerializeField] private GameObject _gameMenu;
+        [SerializeField] private GameObject _handMenu;
 
         private GameObject _previous;
 
@@ -47,17 +48,19 @@ namespace HTW.AiRHockey.UI
 
         private void MenuOnConnect()
         {
-            _handMenu.gameObject.SetActive(true);
             _mainMenu.SetActive(false);
+            _gameMenu.SetActive(true);
+            _handMenu.SetActive(true);
         }
 
         private void MenuOnDisconnect()
         {
-            _handMenu.gameObject.SetActive(false);
             _current.SetActive(false);
             _current = _mainMenu.transform.GetChild(0).gameObject;
             _current.SetActive(true);
             _mainMenu.SetActive(true);
+            _gameMenu.SetActive(false);
+            _handMenu.SetActive(false);
         }
     }
 }
