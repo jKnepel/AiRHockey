@@ -763,7 +763,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 006425f578d1da01
+  metroCertificateNotAfter: 80dc2fe248d5da01
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: A(i)RHockey

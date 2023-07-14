@@ -205,19 +205,19 @@ namespace HTW.AiRHockey.Game
 			byte[] data = new byte[FLOAT_LENGTH * 6];
 			if (_remotePlayer != null)
 			{
-				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.x), 0, data, FLOAT_LENGTH * 0, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(_remotePlayer.position.z), 0, data, FLOAT_LENGTH * 1, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_remotePlayer.transform.localPosition.x), 0, data, FLOAT_LENGTH * 0, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_remotePlayer.transform.localPosition.z), 0, data, FLOAT_LENGTH * 1, FLOAT_LENGTH);
 			}
 
 			{
-				Array.Copy(BitConverter.GetBytes(_localPlayer.position.x),  0, data, FLOAT_LENGTH * 2, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(_localPlayer.position.z),  0, data, FLOAT_LENGTH * 3, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_localPlayer.transform.localPosition.x),  0, data, FLOAT_LENGTH * 2, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_localPlayer.transform.localPosition.z),  0, data, FLOAT_LENGTH * 3, FLOAT_LENGTH);
 			}
 
 			if (_currentPuck != null)
 			{
-				Array.Copy(BitConverter.GetBytes(_currentPuck.position.x),  0, data, FLOAT_LENGTH * 4, FLOAT_LENGTH);
-				Array.Copy(BitConverter.GetBytes(_currentPuck.position.z),  0, data, FLOAT_LENGTH * 5, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_currentPuck.transform.localPosition.x),  0, data, FLOAT_LENGTH * 4, FLOAT_LENGTH);
+				Array.Copy(BitConverter.GetBytes(_currentPuck.transform.localPosition.z),  0, data, FLOAT_LENGTH * 5, FLOAT_LENGTH);
 			}
 			SendData(data);
 		}
