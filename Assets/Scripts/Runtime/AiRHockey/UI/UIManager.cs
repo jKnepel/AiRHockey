@@ -6,7 +6,7 @@ namespace HTW.AiRHockey.UI
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private GameObject _current;
-        [SerializeField] private PlayerUI _handMenu;
+        [SerializeField] private GameObject _handMenu;
         [SerializeField] private GameObject _mainMenu;
 
         private GameObject _previous;

@@ -2532,7 +2532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _current: {fileID: 1179080843}
-  _handMenu: {fileID: 1153769834}
+  _handMenu: {fileID: 1153769833}
   _mainMenu: {fileID: 1324304197}
 --- !u!4 &737210276
 Transform:
@@ -4179,18 +4179,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8251172806735141447, guid: 66ae0ae37a8a9b442b423fe106842df6, type: 3}
   m_PrefabInstance: {fileID: 1153769831}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1153769834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153769833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fd2846988ed392428c524ec95843efa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1158438773
 GameObject:
   m_ObjectHideFlags: 0
