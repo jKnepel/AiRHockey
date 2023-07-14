@@ -48,7 +48,9 @@ namespace HTW.AiRHockey.Game
 				| (1 << LayerMask.NameToLayer("Puck"));
 
 			Vector3 position = _isHost ? _hostSpawn.position : _clientSpawn.position;
-			_localPlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
+			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent);
+			player.IsLocalPlayer = true;
+			_localPlayer = player.Rigidbody;
 			_localPlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.HostMaterial : InstanceFinder.GameSettings.ClientMaterial;
 			_localPlayer.gameObject.name = "LocalPlayer";
 		}
@@ -74,7 +76,9 @@ namespace HTW.AiRHockey.Game
 		public void CreateRemotePlayer()
 		{
 			Vector3 position = _isHost ? _clientSpawn.position : _hostSpawn.position;
-			_remotePlayer = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
+			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent);
+			player.IsLocalPlayer = false;
+			_remotePlayer = player.Rigidbody;
 			_remotePlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.ClientMaterial : InstanceFinder.GameSettings.HostMaterial;
 			_remotePlayer.gameObject.name = "RemotePlayer";
 		}

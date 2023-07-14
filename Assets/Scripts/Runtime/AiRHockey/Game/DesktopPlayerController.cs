@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace HTW.AiRHockey.Game
 {
-	// temp class until open xr interaction is added
-	public class DesktopController : MonoBehaviour
+	public class DesktopPlayerController : MonoBehaviour
 	{
 		private Vector2 _movement = new();
 

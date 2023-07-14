@@ -16,7 +16,9 @@ namespace HTW.AiRHockey.Settings
 
         public float ArenaSizeMultiplier = 5;
 
-        public GameObject   PlayerPrefab;
+        public bool IsRightHanded = true;
+
+        public Player       PlayerPrefab;
         public Puck         PuckPrefab;
 
         public Material     HostMaterial;

@@ -20,7 +20,6 @@ namespace HTW.AiRHockey.Game
 		public bool IsGameStarted => _gameState?.IsGameStarted ?? false;
 		public bool IsGamePaused => _gameState?.IsGamePaused ?? false;
 
-
 		public bool IsReady => _gameState?.IsReady ?? false;
 		public bool IsOtherPlayerReady => _gameState?.IsOtherPlayerReady ?? false;
 
