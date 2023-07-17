@@ -24,7 +24,6 @@ namespace HTW.AiRHockey.Outline
         {
             if(!disabled)
             {
-                defaultLayer = gameObject.layer;
                 gameObject.layer = outlineLayer;
             }
         }

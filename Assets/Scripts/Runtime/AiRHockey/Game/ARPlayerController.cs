@@ -4,10 +4,11 @@ using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using HTW.AiRHockey.Outline;
 
 namespace HTW.AiRHockey.Game
 {
-    [RequireComponent(typeof(Player), typeof(StatefulInteractable), typeof(MeshOutline))]
+    [RequireComponent(typeof(Player), typeof(StatefulInteractable), typeof(OutlineObject))]
     public class ARPlayerController : MonoBehaviour
     {
         [SerializeField] private InputActionProperty    _leftControllerPosition;
@@ -15,9 +16,9 @@ namespace HTW.AiRHockey.Game
 
         [SerializeField] private Player                 _player;
         [SerializeField] private StatefulInteractable   _interactable;
-        [SerializeField] private MeshOutline            _outline;
+        [SerializeField] private OutlineObject          _outline;
 
-        private Vector3 _lastPosition;
+        private bool _isSelected;
 
         private void Awake()
         {
@@ -26,33 +27,28 @@ namespace HTW.AiRHockey.Game
             if (_interactable == null)
                 _interactable = GetComponent<StatefulInteractable>();
             if (_outline == null)
-                _outline = GetComponent<MeshOutline>();
+                _outline = GetComponent<OutlineObject>();
         }
 
         private void OnEnable()
         {
-            _interactable.hoverEntered.AddListener(ActivateOutline);
-            _interactable.hoverExited.AddListener(DeactivateOutline);
+            GameManagerEvents.OnGamePaused += DeactivateManipulator;
+            GameManagerEvents.OnGameResumed += ActivateManipulator;
         }
 
         private void OnDisable()
         {
-            _interactable.hoverEntered.RemoveListener(ActivateOutline);
-            _interactable.hoverExited.RemoveListener(DeactivateOutline);
+            GameManagerEvents.OnGamePaused -= DeactivateManipulator;
+            GameManagerEvents.OnGameResumed -= ActivateManipulator;
         }
 
         private void Update()
         {
             InputActionProperty positionalProperty = InstanceFinder.GameSettings.IsRightHanded ? _rightControllerPosition : _leftControllerPosition;
-            if (_player.IsLocalPlayer && InstanceFinder.GameManager.IsGameStarted && _interactable.IsToggled && positionalProperty.action != null)
+            if (_player.IsLocalPlayer && _isSelected && InstanceFinder.GameManager.IsGameStarted && positionalProperty.action != null)
             {
                 Vector3 position = positionalProperty.action.ReadValue<Vector3>();
-                if (position.Equals(Vector3.zero))
-                    return;
-
-                Vector2 offset = new(position.x - _lastPosition.x, position.z - _lastPosition.z);
-                InstanceFinder.GameManager.UpdatePlayerTransform(offset);
-                _lastPosition = position;
+                InstanceFinder.GameManager.UpdatePlayerTransform(new(position.x, position.z));
             }
         }
 
@@ -63,10 +59,9 @@ namespace HTW.AiRHockey.Game
         public void IsSelected(Single single)
         {
             InstanceFinder.GameManager.ReadyUp();
-            DeactivateOutline(null);
-            _interactable.hoverEntered.RemoveListener(ActivateOutline);
-            _interactable.hoverExited.RemoveListener(DeactivateOutline);
-            Debug.Log("Is Selected:" + single);
+            _outline.ActivateOutlines();
+            _isSelected = true;
+            Debug.Log("Is Selected");
 
         }
 
@@ -77,20 +72,29 @@ namespace HTW.AiRHockey.Game
         public void IsDeselected(Single single)
         {
             InstanceFinder.GameManager.Unready();
-            _interactable.hoverEntered.AddListener(ActivateOutline);
-            _interactable.hoverExited.AddListener(DeactivateOutline);
-            Debug.Log("Is Deselected: " + single);
-
+            _isSelected = false;
+            _outline.DeactivateOutlines();
         }
 
-        private void ActivateOutline(HoverEnterEventArgs args) {
-            _outline.enabled = true;
-        }
+        public void ActivateOutlines(Single single)
+		{ 
+            _outline.ActivateOutlines();
+		}
 
-        private void DeactivateOutline(HoverExitEventArgs args)
+        public void DeactivateOutlines(Single single)
+		{
+            if (!_isSelected)
+                _outline.DeactivateOutlines();
+		}
+
+        private void ActivateManipulator()
         {
-            _outline.enabled = false;
+            _interactable.enabled = true;
         }
 
+        private void DeactivateManipulator()
+        {
+            _interactable.enabled = false;
+        }
     }
 }
