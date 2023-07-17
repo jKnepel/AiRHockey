@@ -10,8 +10,6 @@ namespace HTW.AiRHockey.Settings
     {
         public int DecidingScore = 20;
 
-        public float PlayerSpeed = 20f;
-
         public int TransformSendHertz = 60;
 
         public float ArenaSizeMultiplier = 5;

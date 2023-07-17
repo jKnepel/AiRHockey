@@ -1,9 +1,7 @@
 using System;
-using Microsoft.MixedReality.GraphicsTools;
 using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
 using HTW.AiRHockey.Outline;
 
 namespace HTW.AiRHockey.Game

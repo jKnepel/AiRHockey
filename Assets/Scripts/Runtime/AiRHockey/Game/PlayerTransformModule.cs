@@ -89,23 +89,37 @@ namespace HTW.AiRHockey.Game
 			_remotePlayer = null;
 		}
 
-		public void ResetPlayers(bool reinstantiatePuck = true)
+		public void ResetPlayers(bool deletePuck = true)
 		{
-			if (_currentPuck != null)
+			if (deletePuck)
+			{
 				GameObject.Destroy(_currentPuck.gameObject);
-
-			if (reinstantiatePuck)
+			}
+			else if (_currentPuck != null)
+			{
+				_currentPuck.position = _puckSpawn.position;
+				_currentPuck.velocity = Vector3.zero;
+				_currentPuck.angularVelocity = Vector3.zero;
+				if (!_isHost) _currentPuck.isKinematic = true;
+			}
+			else
 			{
 				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, _puckSpawn.position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
 				if (!_isHost) _currentPuck.isKinematic = true;
 			}
-			
+
 			if (!_isHost)
 				return;
-			
+
 			_localPlayer.position = _isHost ? _hostSpawn.position : _clientSpawn.position;
+			_localPlayer.velocity = Vector3.zero;
+			_localPlayer.angularVelocity = Vector3.zero;
 			if (_remotePlayer != null)
+			{
 				_remotePlayer.position = _isHost ? _clientSpawn.position : _hostSpawn.position;
+				_remotePlayer.velocity = Vector3.zero;
+				_remotePlayer.angularVelocity = Vector3.zero;
+			}
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
