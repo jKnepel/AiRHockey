@@ -26,6 +26,9 @@ namespace HTW.AiRHockey.Game
                 _interactable = GetComponent<StatefulInteractable>();
             if (_outline == null)
                 _outline = GetComponent<OutlineObject>();
+
+            if (!_player.IsLocalPlayer)
+                enabled = false;
         }
 
         private void OnEnable()
@@ -43,7 +46,7 @@ namespace HTW.AiRHockey.Game
         private void Update()
         {
             InputActionProperty positionalProperty = InstanceFinder.GameSettings.IsRightHanded ? _rightControllerPosition : _leftControllerPosition;
-            if (_player.IsLocalPlayer && _isSelected && InstanceFinder.GameManager.IsGameStarted && positionalProperty.action != null)
+            if (_isSelected && InstanceFinder.GameManager.IsGameStarted && positionalProperty.action != null)
             {
                 Vector3 position = positionalProperty.action.ReadValue<Vector3>();
                 InstanceFinder.GameManager.UpdatePlayerTransform(new(position.x, position.z));
@@ -59,8 +62,6 @@ namespace HTW.AiRHockey.Game
             InstanceFinder.GameManager.ReadyUp();
             _outline.ActivateOutlines();
             _isSelected = true;
-            Debug.Log("Is Selected");
-
         }
 
         /// <summary>

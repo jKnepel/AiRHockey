@@ -89,7 +89,7 @@ namespace HTW.AiRHockey.Game
 			_remotePlayer = null;
 		}
 
-		public void ResetPlayers(bool deletePuck = true)
+		public void ResetPlayers(bool deletePuck = false)
 		{
 			if (deletePuck)
 			{
