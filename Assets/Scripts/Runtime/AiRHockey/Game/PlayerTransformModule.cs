@@ -183,7 +183,7 @@ namespace HTW.AiRHockey.Game
 			{	// calculate position of current player as host
 				Rigidbody player = isLocal ? _localPlayer : _remotePlayer;
 				Vector3 movement = new(movementInput.x, 0, movementInput.y);
-				Vector3 newPosition = player.transform.position + InstanceFinder.GameSettings.PlayerSpeed * Time.fixedDeltaTime * movement;
+				Vector3 newPosition = player.transform.position + movement;
 				Vector3 direction = newPosition - player.transform.position;
 				float delta = Vector3.Distance(player.transform.position, newPosition);
 
