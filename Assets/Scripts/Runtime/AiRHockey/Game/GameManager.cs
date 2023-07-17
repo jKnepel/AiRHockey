@@ -124,18 +124,6 @@ namespace HTW.AiRHockey.Game
 		/// </summary>
 		public void DisconnectFromServer()
 		{
-			if (_gameState != null)
-			{
-				_gameState.Dispose();
-				_gameState = null;
-			}
-
-			if (_playerTransform != null)
-			{
-				_playerTransform.Dispose();
-				_playerTransform = null;
-			}
-
 			ModuledNetManager.DisconnectFromServer();
 		}
 
@@ -234,7 +222,7 @@ namespace HTW.AiRHockey.Game
 		/// <param name="scoringPlayer"></param>
 		public void ScoreGoal(bool scoringPlayer)
 		{
-			if (!IsOnline || !IsGameStarted)
+			if (!IsOnline || !IsHost || !IsGameStarted)
 				return;
 
 			_gameState.ScoreGoal(scoringPlayer);
@@ -277,6 +265,7 @@ namespace HTW.AiRHockey.Game
 
 			if (_playerTransform != null)
 			{
+				_playerTransform.DestroyObjects();
 				_playerTransform.Dispose();
 				_playerTransform = null;
 			}

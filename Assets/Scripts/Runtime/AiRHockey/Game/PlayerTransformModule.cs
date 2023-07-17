@@ -122,6 +122,16 @@ namespace HTW.AiRHockey.Game
 			}
 		}
 
+		public void DestroyObjects()
+		{
+			if (_currentPuck != null)
+				GameObject.Destroy(_currentPuck.gameObject);
+			if (_localPlayer != null)
+				GameObject.Destroy(_localPlayer.gameObject);
+			if (_remotePlayer != null)
+				GameObject.Destroy(_remotePlayer.gameObject);
+		}
+
 		public void UpdatePlayerTransform(Vector2 movementInput)
 		{
 			CalculateTransform(movementInput, true);
@@ -156,7 +166,7 @@ namespace HTW.AiRHockey.Game
 					Array.Copy(data, FLOAT_LENGTH * 1, positionZBytes, 0, FLOAT_LENGTH);
 					float positionZ = BitConverter.ToSingle(positionZBytes);
 
-					_localPlayer.transform.localPosition = new(positionX, _localPlayer.transform.position.y, positionZ);
+					_localPlayer.transform.localPosition = new(positionX, _localPlayer.transform.localPosition.y, positionZ);
 				}
 
 				if (_remotePlayer != null)
@@ -169,7 +179,7 @@ namespace HTW.AiRHockey.Game
 					Array.Copy(data, FLOAT_LENGTH * 3, positionZBytes, 0, FLOAT_LENGTH);
 					float positionZ = BitConverter.ToSingle(positionZBytes);
 
-					_remotePlayer.transform.localPosition = new(positionX, _remotePlayer.transform.position.y, positionZ);
+					_remotePlayer.transform.localPosition = new(positionX, _remotePlayer.transform.localPosition.y, positionZ);
 				}
 
 				if (_currentPuck != null)
@@ -182,7 +192,7 @@ namespace HTW.AiRHockey.Game
 					Array.Copy(data, FLOAT_LENGTH * 5, positionZBytes, 0, FLOAT_LENGTH);
 					float positionZ = BitConverter.ToSingle(positionZBytes);
 
-					_currentPuck.transform.localPosition = new(positionX, _currentPuck.transform.position.y, positionZ);
+					_currentPuck.transform.localPosition = new(positionX, _currentPuck.transform.localPosition.y, positionZ);
 				}
 			}
 		}

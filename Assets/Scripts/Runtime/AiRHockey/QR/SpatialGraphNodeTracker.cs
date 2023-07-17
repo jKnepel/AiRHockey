@@ -58,7 +58,7 @@ namespace HTW.AiRHockey.QR
                     transform.localScale = InstanceFinder.GameSettings.ArenaSizeMultiplier * PhysicalSideLength * Vector3.one;
                     pose.rotation *= Quaternion.Euler(90, 0, 0);
                     float deltaCenter = PhysicalSideLength * 0.5f;
-                    pose.position += pose.rotation * (deltaCenter * Vector3.right) + pose.rotation * (1 * Vector3.up) - pose.rotation * (deltaCenter * Vector3.forward);
+                    pose.position += pose.rotation * (deltaCenter * Vector3.right) - pose.rotation * (deltaCenter * Vector3.forward);
                     transform.SetPositionAndRotation(pose.position, pose.rotation);
                     Debug.Log($"Id={Id} QRPose={pose.position} QRRot={pose.rotation}");
                 }
