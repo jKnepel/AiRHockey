@@ -26,9 +26,6 @@ namespace HTW.AiRHockey.Game
                 _interactable = GetComponent<StatefulInteractable>();
             if (_outline == null)
                 _outline = GetComponent<OutlineObject>();
-
-            if (!_player.IsLocalPlayer)
-                enabled = false;
         }
 
         private void OnEnable()
@@ -46,7 +43,7 @@ namespace HTW.AiRHockey.Game
         private void Update()
         {
             InputActionProperty positionalProperty = InstanceFinder.GameSettings.IsRightHanded ? _rightControllerPosition : _leftControllerPosition;
-            if (_isSelected && InstanceFinder.GameManager.IsGameStarted && positionalProperty.action != null)
+            if (_player.IsLocalPlayer && _isSelected && InstanceFinder.GameManager.IsGameStarted && positionalProperty.action != null)
             {
                 Vector3 position = positionalProperty.action.ReadValue<Vector3>();
                 InstanceFinder.GameManager.UpdatePlayerTransform(new(position.x, position.z));
@@ -59,6 +56,9 @@ namespace HTW.AiRHockey.Game
         /// <param name="Single"></param>
         public void IsSelected(Single single)
         {
+            if (!_player.IsLocalPlayer)
+                return;
+
             InstanceFinder.GameManager.ReadyUp();
             _outline.ActivateOutlines();
             _isSelected = true;
@@ -70,6 +70,9 @@ namespace HTW.AiRHockey.Game
         /// <param name="Single"></param>
         public void IsDeselected(Single single)
         {
+            if (!_player.IsLocalPlayer)
+                return;
+
             InstanceFinder.GameManager.Unready();
             _isSelected = false;
             _outline.DeactivateOutlines();
@@ -77,11 +80,17 @@ namespace HTW.AiRHockey.Game
 
         public void ActivateOutlines(Single single)
 		{ 
+            if (!_player.IsLocalPlayer)
+                return;
+
             _outline.ActivateOutlines();
 		}
 
         public void DeactivateOutlines(Single single)
 		{
+            if (!_player.IsLocalPlayer)
+                return;
+
             if (!_isSelected)
                 _outline.DeactivateOutlines();
 		}
