@@ -147,12 +147,9 @@ namespace HTW.AiRHockey.Game
 			if (!IsOnline || !IsWaitingForPlayers)
 				return;
 
-			if (!IsHost && !IsReady)
-			{
+			if (!IsReady)
 				_gameState.ReadyUp();
-				return;
-			}
-			
+
 			if (IsHost && IsOtherPlayerReady)
 			{
 				_gameState.ReadyUp();
@@ -279,7 +276,7 @@ namespace HTW.AiRHockey.Game
 		private void GameEnded()
 		{	// reset state and players, destroy puck
 			_gameState.ResetState();
-			_playerTransform.ResetPlayers(false);
+			_playerTransform.ResetPlayers(true);
 		}
 
 		private void GameWon(bool winningPlayer)
