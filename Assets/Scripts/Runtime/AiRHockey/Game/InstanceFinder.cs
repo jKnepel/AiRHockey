@@ -46,6 +46,13 @@ namespace HTW.AiRHockey.Game
             }
 		}
 
+        private static SpatialGraphNodeTracker _nodeTracker;
+        public static SpatialGraphNodeTracker NodeTracker
+		{
+            get => _nodeTracker;
+            set => _nodeTracker = value;
+		}
+
         public static GameSettings GameSettings => _gameManager.GameSettings;
     }
 }

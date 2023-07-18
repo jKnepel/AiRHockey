@@ -45,7 +45,7 @@ namespace HTW.AiRHockey.Game
             InputActionProperty positionalProperty = InstanceFinder.GameSettings.IsRightHanded ? _rightControllerPosition : _leftControllerPosition;
             if (_player.IsLocalPlayer && _isSelected && InstanceFinder.GameManager.IsGameStarted && positionalProperty.action != null)
             {
-                Vector3 position = positionalProperty.action.ReadValue<Vector3>();
+                Vector3 position = InstanceFinder.NodeTracker.transform.InverseTransformPoint(positionalProperty.action.ReadValue<Vector3>());
                 InstanceFinder.GameManager.UpdatePlayerTransform(new(position.x, position.z));
             }
         }
