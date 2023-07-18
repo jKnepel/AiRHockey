@@ -100,7 +100,6 @@ namespace HTW.AiRHockey.Game
 				_currentPuck.position = _puckSpawn.position;
 				_currentPuck.velocity = Vector3.zero;
 				_currentPuck.angularVelocity = Vector3.zero;
-				if (!_isHost) _currentPuck.isKinematic = true;
 			}
 			else
 			{
@@ -108,12 +107,12 @@ namespace HTW.AiRHockey.Game
 				if (!_isHost) _currentPuck.isKinematic = true;
 			}
 
-			if (!_isHost)
-				return;
-
-			_localPlayer.position = _isHost ? _hostSpawn.position : _clientSpawn.position;
-			_localPlayer.velocity = Vector3.zero;
-			_localPlayer.angularVelocity = Vector3.zero;
+			if (_localPlayer != null)
+			{
+				_localPlayer.position = _isHost ? _hostSpawn.position : _clientSpawn.position;
+				_localPlayer.velocity = Vector3.zero;
+				_localPlayer.angularVelocity = Vector3.zero;
+			}
 			if (_remotePlayer != null)
 			{
 				_remotePlayer.position = _isHost ? _clientSpawn.position : _hostSpawn.position;

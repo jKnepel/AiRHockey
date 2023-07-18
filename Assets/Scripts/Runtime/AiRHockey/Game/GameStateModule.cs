@@ -135,6 +135,8 @@ namespace HTW.AiRHockey.Game
 			{
 				case GameStatePacketType.ReadyUp:
 					IsOtherPlayerReady = true;
+					if (IsReady)
+						StartGame();
 					break;
 				case GameStatePacketType.Unready:
 					IsOtherPlayerReady = false;
