@@ -7,7 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
-    guid: e6662c721b2136e4d9d1ed8acaaccd7c
+    guid: 6fcd749c9eee6024596ac52b3eeeb5b8
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 62fd29f7fd72a604e97ac78af3a157d7, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d0e8b569879f2564b8b2d61d4483216f, type: 2}

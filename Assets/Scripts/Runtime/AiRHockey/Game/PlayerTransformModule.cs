@@ -89,23 +89,47 @@ namespace HTW.AiRHockey.Game
 			_remotePlayer = null;
 		}
 
-		public void ResetPlayers(bool reinstantiatePuck = true)
+		public void ResetPlayers(bool deletePuck = false)
 		{
-			if (_currentPuck != null)
+			if (deletePuck)
+			{
 				GameObject.Destroy(_currentPuck.gameObject);
-
-			if (reinstantiatePuck)
+			}
+			else if (_currentPuck != null)
+			{
+				_currentPuck.position = _puckSpawn.position;
+				_currentPuck.velocity = Vector3.zero;
+				_currentPuck.angularVelocity = Vector3.zero;
+				if (!_isHost) _currentPuck.isKinematic = true;
+			}
+			else
 			{
 				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, _puckSpawn.position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
 				if (!_isHost) _currentPuck.isKinematic = true;
 			}
-			
+
 			if (!_isHost)
 				return;
-			
+
 			_localPlayer.position = _isHost ? _hostSpawn.position : _clientSpawn.position;
+			_localPlayer.velocity = Vector3.zero;
+			_localPlayer.angularVelocity = Vector3.zero;
 			if (_remotePlayer != null)
+			{
 				_remotePlayer.position = _isHost ? _clientSpawn.position : _hostSpawn.position;
+				_remotePlayer.velocity = Vector3.zero;
+				_remotePlayer.angularVelocity = Vector3.zero;
+			}
+		}
+
+		public void DestroyObjects()
+		{
+			if (_currentPuck != null)
+				GameObject.Destroy(_currentPuck.gameObject);
+			if (_localPlayer != null)
+				GameObject.Destroy(_localPlayer.gameObject);
+			if (_remotePlayer != null)
+				GameObject.Destroy(_remotePlayer.gameObject);
 		}
 
 		public void UpdatePlayerTransform(Vector2 movementInput)
@@ -182,8 +206,8 @@ namespace HTW.AiRHockey.Game
 			else
 			{	// calculate position of current player as host
 				Rigidbody player = isLocal ? _localPlayer : _remotePlayer;
-				Vector3 movement = new(movementInput.x, 0, movementInput.y);
-				Vector3 newPosition = player.transform.position + InstanceFinder.GameSettings.PlayerSpeed * Time.fixedDeltaTime * movement;
+				Vector3 movement = new(movementInput.x, player.transform.position.y, movementInput.y);
+				Vector3 newPosition = movement;
 				Vector3 direction = newPosition - player.transform.position;
 				float delta = Vector3.Distance(player.transform.position, newPosition);
 

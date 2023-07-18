@@ -10,7 +10,6 @@ namespace HTW.AiRHockey.Game
 
 		private void OnCollisionEnter(Collision collision)
 		{
-			Debug.Log(collision.gameObject.layer);
 			if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
 			{
 				_puckPlayerSound.Play();

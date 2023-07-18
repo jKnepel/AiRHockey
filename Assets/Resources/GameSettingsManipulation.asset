@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ddfc9aebd7b1e4aaa03521975a766d, type: 3}
+  m_Name: GameSettingsManipulation
+  m_EditorClassIdentifier: 
+  DecidingScore: 10
+  PlayerSpeed: 20
+  TransformSendHertz: 60
+  ArenaSizeMultiplier: 5
+  IsRightHanded: 1
+  PlayerPrefab: {fileID: 7825244514590518882, guid: 8f610b721a846884e855aa27b978f36c, type: 3}
+  PuckPrefab: {fileID: 65194571394294315, guid: 16cacd41a7fcbba45ab90f9ba0a090c5, type: 3}
+  HostMaterial: {fileID: 2100000, guid: 4f7dea6c8ca969a40bf3dc2c6dc0e95a, type: 2}
+  ClientMaterial: {fileID: 2100000, guid: 2e94b28c8ba575b4f8a885c61847b0f6, type: 2}

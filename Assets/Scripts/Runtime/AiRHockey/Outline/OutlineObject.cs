@@ -10,8 +10,13 @@ namespace HTW.AiRHockey.Outline
         private int outlineLayer = 12;
         public bool disabled = false;
 
+        private void Start()
+        {
+            defaultLayer = gameObject.layer;
+        }
         public void DisableOutlines(bool disabled)
         {
+            DeactivateOutlines();
             this.disabled = disabled;
         }
 
@@ -19,7 +24,6 @@ namespace HTW.AiRHockey.Outline
         {
             if(!disabled)
             {
-                defaultLayer = gameObject.layer;
                 gameObject.layer = outlineLayer;
             }
         }
