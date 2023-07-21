@@ -144,12 +144,6 @@ namespace HTW.AiRHockey.Game
 
 			if (!IsReady)
 				_gameState.ReadyUp();
-
-			if (IsHost && IsOtherPlayerReady)
-			{
-				_gameState.ReadyUp();
-				_gameState.StartGame();
-			}
 		}
 
 		/// <summary>
@@ -239,6 +233,8 @@ namespace HTW.AiRHockey.Game
 			GameManagerEvents.OnGameWon += GameWon;
 			GameManagerEvents.OnGoalScored += GoalScored;
 			GameManagerEvents.OnResetPlayers += PlayersReset;
+			GameManagerEvents.OnPlayerReady += PlayerReadyUp;
+			GameManagerEvents.OnOtherPlayerReady += OtherPlayerReadyUp;
 		}
 
 		private void Disconnected()
@@ -248,7 +244,9 @@ namespace HTW.AiRHockey.Game
 			GameManagerEvents.OnGameWon -= GameWon;
 			GameManagerEvents.OnGoalScored -= GoalScored;
 			GameManagerEvents.OnResetPlayers -= PlayersReset;
-			
+			GameManagerEvents.OnPlayerReady -= PlayerReadyUp;
+			GameManagerEvents.OnOtherPlayerReady -= OtherPlayerReadyUp;
+
 			if (_gameState != null)
 			{
 				_gameState.Dispose();
@@ -291,6 +289,18 @@ namespace HTW.AiRHockey.Game
 		private void PlayersReset()
 		{	// reset players and puck
 			_playerTransform.ResetPlayers();
+		}
+
+		private void PlayerReadyUp(bool isReady)
+		{	// start game if ready, host and other player already ready
+			if (IsHost && IsOtherPlayerReady && isReady)
+				_gameState.StartGame();
+		}
+
+		private void OtherPlayerReadyUp(bool isReady)
+		{	// start game if other player ready, host and already ready
+			if (IsHost && IsReady && isReady)
+				_gameState.StartGame();
 		}
 
 		private void ClientConnected(byte clientID)
