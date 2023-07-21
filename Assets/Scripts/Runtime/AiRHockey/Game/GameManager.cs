@@ -52,11 +52,6 @@ namespace HTW.AiRHockey.Game
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
 
-		[SerializeField] private Transform _spawnParent;
-		[SerializeField] private Transform _hostSpawn;
-		[SerializeField] private Transform _clientSpawn;
-		[SerializeField] private Transform _puckSpawn;
-
 		#endregion
 
 		#region lifecycle
@@ -237,7 +232,7 @@ namespace HTW.AiRHockey.Game
 		private void Connected()
 		{   // load gamestate module and player module
 			_gameState = new();
-			_playerTransform = new(IsHost, _spawnParent, _hostSpawn, _clientSpawn, _puckSpawn);
+			_playerTransform = new(IsHost);
 
 			GameManagerEvents.OnGameStart += GameStarted;
 			GameManagerEvents.OnGameEnd += GameEnded;

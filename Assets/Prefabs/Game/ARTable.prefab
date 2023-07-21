@@ -3033,6 +3033,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6975825888493536666}
+  - component: {fileID: 6960203094146469712}
   - component: {fileID: 3139182906390925894}
   m_Layer: 0
   m_Name: ARTable
@@ -3063,6 +3064,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6960203094146469712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6975825888493536669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3698e22182c3f30409f1d044194ef1bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hostSpawn: {fileID: 4743327304276852372}
+  _clientSpawn: {fileID: 9203868718755678421}
+  _puckSpawn: {fileID: 3292214316291403710}
+  PuckSpawn: {fileID: 0}
 --- !u!114 &3139182906390925894
 MonoBehaviour:
   m_ObjectHideFlags: 0
