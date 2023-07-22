@@ -38,7 +38,6 @@ namespace HTW.AiRHockey.QR
 		private void Start()
         {
             InitializeSpatialGraphNode();
-            InstanceFinder.NodeTracker = this;
         }
 
         private void Update()

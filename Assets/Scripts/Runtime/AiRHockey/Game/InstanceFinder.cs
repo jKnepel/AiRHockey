@@ -46,11 +46,23 @@ namespace HTW.AiRHockey.Game
             }
 		}
 
-        private static SpatialGraphNodeTracker _nodeTracker;
-        public static SpatialGraphNodeTracker NodeTracker
+        private static Arena _arena;
+        public static Arena Arena
 		{
-            get => _nodeTracker;
-            set => _nodeTracker = value;
+            get => _arena;
+            set
+			{
+                if (_arena != null)
+                {
+#if UNITY_EDITOR
+                    GameObject.DestroyImmediate(_arena.gameObject);
+#else
+                    GameObject.Destroy(_arena.gameObject);
+#endif
+                }
+
+                _arena = value;
+            }
 		}
 
         public static GameSettings GameSettings => _gameManager.GameSettings;

@@ -15,10 +15,6 @@ namespace HTW.AiRHockey.Game
 		#region fields
 
 		private readonly bool _isHost;
-		private readonly Transform _spawnParent;
-		private readonly Transform _hostSpawn;
-		private readonly Transform _clientSpawn;
-		private readonly Transform _puckSpawn;
 
 		private readonly int _layerMask;
 
@@ -36,19 +32,15 @@ namespace HTW.AiRHockey.Game
 
 		#region lifecycle
 
-		public PlayerTransformModule(bool isHost, Transform spawnParent, Transform hostSpawn, Transform clientSpawn, Transform puckSpawn)
+		public PlayerTransformModule(bool isHost)
 		{
 			_isHost = isHost;
-			_spawnParent = spawnParent;
-			_hostSpawn = hostSpawn;
-			_clientSpawn = clientSpawn;
-			_puckSpawn = puckSpawn;
 			_layerMask = (1 << LayerMask.NameToLayer("Barrier")) 
 				| (1 << LayerMask.NameToLayer("Player Barrier")) 
 				| (1 << LayerMask.NameToLayer("Puck"));
 
-			Vector3 position = _isHost ? _hostSpawn.position : _clientSpawn.position;
-			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent);
+			Vector3 position = _isHost ? InstanceFinder.Arena.HostSpawn.position : InstanceFinder.Arena.ClientSpawn.position;
+			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, InstanceFinder.Arena.transform);
 			player.IsLocalPlayer = true;
 			_localPlayer = player.Rigidbody;
 			_localPlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.HostMaterial : InstanceFinder.GameSettings.ClientMaterial;
@@ -75,8 +67,8 @@ namespace HTW.AiRHockey.Game
 
 		public void CreateRemotePlayer()
 		{
-			Vector3 position = _isHost ? _clientSpawn.position : _hostSpawn.position;
-			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, _spawnParent);
+			Vector3 position = _isHost ? InstanceFinder.Arena.ClientSpawn.position : InstanceFinder.Arena.HostSpawn.position;
+			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, InstanceFinder.Arena.transform);
 			player.IsLocalPlayer = false;
 			_remotePlayer = player.Rigidbody;
 			_remotePlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.ClientMaterial : InstanceFinder.GameSettings.HostMaterial;
@@ -97,25 +89,25 @@ namespace HTW.AiRHockey.Game
 			}
 			else if (_currentPuck != null)
 			{
-				_currentPuck.position = _puckSpawn.position;
+				_currentPuck.position = InstanceFinder.Arena.PuckSpawn.position;
 				_currentPuck.velocity = Vector3.zero;
 				_currentPuck.angularVelocity = Vector3.zero;
 			}
 			else
 			{
-				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, _puckSpawn.position, Quaternion.identity, _spawnParent).GetComponent<Rigidbody>();
+				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, InstanceFinder.Arena.PuckSpawn.position, Quaternion.identity, InstanceFinder.Arena.transform).GetComponent<Rigidbody>();
 				if (!_isHost) _currentPuck.isKinematic = true;
 			}
 
 			if (_localPlayer != null)
 			{
-				_localPlayer.position = _isHost ? _hostSpawn.position : _clientSpawn.position;
+				_localPlayer.position = _isHost ? InstanceFinder.Arena.HostSpawn.position : InstanceFinder.Arena.ClientSpawn.position;
 				_localPlayer.velocity = Vector3.zero;
 				_localPlayer.angularVelocity = Vector3.zero;
 			}
 			if (_remotePlayer != null)
 			{
-				_remotePlayer.position = _isHost ? _clientSpawn.position : _hostSpawn.position;
+				_remotePlayer.position = _isHost ? InstanceFinder.Arena.ClientSpawn.position : InstanceFinder.Arena.HostSpawn.position;
 				_remotePlayer.velocity = Vector3.zero;
 				_remotePlayer.angularVelocity = Vector3.zero;
 			}

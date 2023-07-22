@@ -11,5 +11,7 @@ namespace HTW.AiRHockey.Game
 		public static Action<bool> OnGameWon;
 		public static Action<bool> OnGoalScored;
 		public static Action OnResetPlayers;
+		public static Action<bool> OnPlayerReady;
+		public static Action<bool> OnOtherPlayerReady;
 	}
 }

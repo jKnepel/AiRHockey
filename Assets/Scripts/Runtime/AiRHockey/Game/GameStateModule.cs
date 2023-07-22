@@ -61,6 +61,7 @@ namespace HTW.AiRHockey.Game
 			byte[] data = { (byte)GameStatePacketType.ReadyUp };
 			SendData(data);
 			IsReady = true;
+			GameManagerEvents.OnPlayerReady?.Invoke(true);
 		}
 
 		public void Unready()
@@ -68,6 +69,7 @@ namespace HTW.AiRHockey.Game
 			byte[] data = { (byte)GameStatePacketType.Unready };
 			SendData(data);
 			IsReady = false;
+			GameManagerEvents.OnPlayerReady?.Invoke(false);
 		}
 
 		public void StartGame()
@@ -135,11 +137,11 @@ namespace HTW.AiRHockey.Game
 			{
 				case GameStatePacketType.ReadyUp:
 					IsOtherPlayerReady = true;
-					if (IsReady)
-						StartGame();
+					GameManagerEvents.OnOtherPlayerReady?.Invoke(true);
 					break;
 				case GameStatePacketType.Unready:
 					IsOtherPlayerReady = false;
+					GameManagerEvents.OnOtherPlayerReady?.Invoke(false);
 					break;
 				case GameStatePacketType.GameStart:
 					IsGameStarted = true;
