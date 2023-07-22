@@ -8,17 +8,17 @@ namespace HTW.AiRHockey.Game
         public bool IsLocalPlayer;
         
         [SerializeField] private Rigidbody _rigidbody;
-        public Rigidbody Rigidbody { get => _rigidbody; private set => _rigidbody = value; }
+        public Rigidbody Rigidbody => _rigidbody;
 
         [SerializeField] private CapsuleCollider _collider;
-        public CapsuleCollider Collider { get => _collider; private set => _collider = value; }
+        public CapsuleCollider Collider => _collider;
 
 		private void Awake()
 		{
             if (Rigidbody == null)
-                Rigidbody = GetComponent<Rigidbody>();
+                _rigidbody = GetComponent<Rigidbody>();
             if (Collider == null)
-                Collider = GetComponent<CapsuleCollider>();
+                _collider = GetComponent<CapsuleCollider>();
 		}
 	}
 }
