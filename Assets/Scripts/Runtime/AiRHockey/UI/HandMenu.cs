@@ -11,16 +11,6 @@ namespace HTW.AiRHockey.UI
 
         private void OnEnable()
         {
-            GameManagerEvents.OnGoalScored += UpdateScore;
-        }
-
-        private void OnDisable()
-        {
-            GameManagerEvents.OnGoalScored -= UpdateScore;
-        }
-
-        private void UpdateScore(bool scoaringPlayer)
-        {
             _player1Score.text = string.Format("{0:00}", InstanceFinder.GameManager.Player1Score);
             _player2Score.text = string.Format("{0:00}", InstanceFinder.GameManager.Player2Score);
         }
