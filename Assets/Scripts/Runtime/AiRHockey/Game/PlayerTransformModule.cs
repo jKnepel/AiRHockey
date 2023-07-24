@@ -39,8 +39,8 @@ namespace HTW.AiRHockey.Game
 				| (1 << LayerMask.NameToLayer("Player Barrier")) 
 				| (1 << LayerMask.NameToLayer("Puck"));
 
-			Vector3 position = _isHost ? InstanceFinder.Arena.HostSpawn.position : InstanceFinder.Arena.ClientSpawn.position;
-			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, InstanceFinder.Arena.transform);
+			Vector3 position = _isHost ? InstanceFinder.GameManager.Arena.HostSpawn.position : InstanceFinder.GameManager.Arena.ClientSpawn.position;
+			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, InstanceFinder.GameManager.Arena.transform);
 			player.IsLocalPlayer = true;
 			_localPlayer = player.Rigidbody;
 			_localPlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.HostMaterial : InstanceFinder.GameSettings.ClientMaterial;
@@ -67,8 +67,8 @@ namespace HTW.AiRHockey.Game
 
 		public void CreateRemotePlayer()
 		{
-			Vector3 position = _isHost ? InstanceFinder.Arena.ClientSpawn.position : InstanceFinder.Arena.HostSpawn.position;
-			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, InstanceFinder.Arena.transform);
+			Vector3 position = _isHost ? InstanceFinder.GameManager.Arena.ClientSpawn.position : InstanceFinder.GameManager.Arena.HostSpawn.position;
+			Player player = GameObject.Instantiate(InstanceFinder.GameSettings.PlayerPrefab, position, Quaternion.identity, InstanceFinder.GameManager.Arena.transform);
 			player.IsLocalPlayer = false;
 			_remotePlayer = player.Rigidbody;
 			_remotePlayer.transform.GetChild(0).GetComponent<MeshRenderer>().material = _isHost ? InstanceFinder.GameSettings.ClientMaterial : InstanceFinder.GameSettings.HostMaterial;
@@ -89,25 +89,25 @@ namespace HTW.AiRHockey.Game
 			}
 			else if (_currentPuck != null)
 			{
-				_currentPuck.position = InstanceFinder.Arena.PuckSpawn.position;
+				_currentPuck.position = InstanceFinder.GameManager.Arena.PuckSpawn.position;
 				_currentPuck.velocity = Vector3.zero;
 				_currentPuck.angularVelocity = Vector3.zero;
 			}
 			else
 			{
-				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, InstanceFinder.Arena.PuckSpawn.position, Quaternion.identity, InstanceFinder.Arena.transform).GetComponent<Rigidbody>();
+				_currentPuck = GameObject.Instantiate(InstanceFinder.GameSettings.PuckPrefab, InstanceFinder.GameManager.Arena.PuckSpawn.position, Quaternion.identity, InstanceFinder.GameManager.Arena.transform).GetComponent<Rigidbody>();
 				if (!_isHost) _currentPuck.isKinematic = true;
 			}
 
 			if (_localPlayer != null)
 			{
-				_localPlayer.position = _isHost ? InstanceFinder.Arena.HostSpawn.position : InstanceFinder.Arena.ClientSpawn.position;
+				_localPlayer.position = _isHost ? InstanceFinder.GameManager.Arena.HostSpawn.position : InstanceFinder.GameManager.Arena.ClientSpawn.position;
 				_localPlayer.velocity = Vector3.zero;
 				_localPlayer.angularVelocity = Vector3.zero;
 			}
 			if (_remotePlayer != null)
 			{
-				_remotePlayer.position = _isHost ? InstanceFinder.Arena.ClientSpawn.position : InstanceFinder.Arena.HostSpawn.position;
+				_remotePlayer.position = _isHost ? InstanceFinder.GameManager.Arena.ClientSpawn.position : InstanceFinder.GameManager.Arena.HostSpawn.position;
 				_remotePlayer.velocity = Vector3.zero;
 				_remotePlayer.angularVelocity = Vector3.zero;
 			}

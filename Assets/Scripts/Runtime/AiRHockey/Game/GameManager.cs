@@ -45,9 +45,13 @@ namespace HTW.AiRHockey.Game
 
 		public GameSettings GameSettings;
 
+		public Arena Arena => _arena;
+
 		#endregion
 
 		#region fields
+
+		[SerializeField] private Arena _arena;
 
 		private GameStateModule _gameState;
 		private PlayerTransformModule _playerTransform;
