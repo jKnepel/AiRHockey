@@ -63,6 +63,7 @@ namespace HTW.AiRHockey.Game
 		private void OnEnable()
 		{
 			InstanceFinder.GameManager = this;
+			InstanceFinder.Arena = _arena;
 			NetworkSettings.MaxNumberClients = 2;
 
 			ModuledNetManager.OnConnected += Connected;

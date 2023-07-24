@@ -12,10 +12,5 @@ namespace HTW.AiRHockey.Game
 
         [SerializeField] private Transform _puckSpawn;
 		public Transform PuckSpawn => _puckSpawn;
-
-		private void OnEnable()
-		{
-			InstanceFinder.Arena = this;
-		}
 	}
 }

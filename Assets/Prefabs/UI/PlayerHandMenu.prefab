@@ -1236,11 +1236,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 712e7ba0eba7aab4e8b2effeac055b74, type: 3}
+--- !u!114 &1454466970506342446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4778031942330912545, guid: 712e7ba0eba7aab4e8b2effeac055b74, type: 3}
+  m_PrefabInstance: {fileID: 6224454881202880271}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3139389454071641183 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9075015685193010000, guid: 712e7ba0eba7aab4e8b2effeac055b74, type: 3}
   m_PrefabInstance: {fileID: 6224454881202880271}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7640983082919735380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4353728621462425435, guid: 712e7ba0eba7aab4e8b2effeac055b74, type: 3}
+  m_PrefabInstance: {fileID: 6224454881202880271}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8799557818066532215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640983082919735380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02aec78d956f86046981fd2cd1dd8f34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player1Score: {fileID: 1454466970506342446}
+  _player2Score: {fileID: 7705677623673299540}
+--- !u!114 &7705677623673299540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4364450128181992795, guid: 712e7ba0eba7aab4e8b2effeac055b74, type: 3}
+  m_PrefabInstance: {fileID: 6224454881202880271}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8441519331452600598 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2542275011290889753, guid: 712e7ba0eba7aab4e8b2effeac055b74, type: 3}
