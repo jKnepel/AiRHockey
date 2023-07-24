@@ -53,7 +53,7 @@ namespace HTW.AiRHockey.QR
 
         #region lifecycle
 
-        private async void Start()
+        private async void Awake()
         {
             InstanceFinder.QRCodesManager = this;
             IsSupported = QRCodeWatcher.IsSupported();
